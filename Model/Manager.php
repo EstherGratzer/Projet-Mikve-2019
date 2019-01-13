@@ -1,13 +1,11 @@
 <?php
 
-require '../config/config.daniel.php';
-
-class Manager{
+class Manager {
 
     protected function dbConnect()
     {
-        $bdd = new PDO('mysql:host={HOST};dbname=projetmikve;charset=utf8', '{BDUSER}', '{BDPASSWORD}');
-        return $bdd;
+        $db = new PDO('mysql:host=localhost;dbname=projetmikve; charset=utf8', 'root', '');
+        return $db;
     }
 }
 

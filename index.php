@@ -1,3 +1,17 @@
+<?php
+require ('Model/Manager.php');
+require ('Model/Users.php');
+$firstname = "Esther";
+$lastname = "Gratzer";
+$login = "esthergratzer@gmail.com";
+$password = "123456789";
+
+$user = new Users();
+$user -> createUser($firstname, $lastname, $login, $password);
+
+return $user
+
+?>
 <!doctype html>
 <html lang="en">
 <head>
