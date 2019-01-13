@@ -1,3 +1,3 @@
-# Poijet Mikve DI-Torah Tech
+# Projet Mikve DI-Torah Tech
 
-prmiere version du projrt
+premiere version du projet
