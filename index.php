@@ -1,3 +1,16 @@
+<?php
+require_once('Model/Manager.php');
+require_once ("Model/UserManager.php");
+$firstname = "a";
+$lastname= "b";
+$login="c";
+$password="d";
+$profil_pic="e";
+$rights_id=1;
+$newuser = new UserManager();
+$newuser->add($firstname, $lastname, $login, $password, $profil_pic, $rights_id);
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -8,6 +21,7 @@
     <title>Document</title>
 </head>
 <body>
+
 
 </body>
 </html>
