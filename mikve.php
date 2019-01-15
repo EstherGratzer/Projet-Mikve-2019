@@ -7,4 +7,4 @@
  */
 session_start();
 
-require("Controller/mikvehCtrl.php");
+require("Controller/mikveCtrl.php");
