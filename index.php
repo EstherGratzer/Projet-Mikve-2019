@@ -1,4 +1,5 @@
 <?php
+require('controller/indexCtrl.php');
 require ('Model/Manager.php');
 require ('Model/Users.php');
 $firstname = "Esther";
