@@ -1,13 +1,17 @@
 <?php
+
+session_start();
+
+require("Controller/homeCtrl.php");
 require ('Model/Manager.php');
 require ('Model/Users.php');
-$firstname = "Esther";
-$lastname = "Gratzer";
-$login = "esthergratzer@gmail.com";
-$password = "123456789";
 
-$user = new Users();
-$user -> createUser($firstname, $lastname, $login, $password);
+
+if (isset($_GET['action'])) {
+    call_user_func($_GET['action']);
+} else {
+    index();
+}
 
 ?>
 <!doctype html>

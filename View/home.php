@@ -1,7 +1,6 @@
-salut je modifie tout
-<<<<<<< HEAD
-et je ne suis sure de rien
-=======
+<?php ob_start(); ?>
 
-hello
->>>>>>> 369e6c8ce69c77b8a7d2bd09cfdcc9101b8fabb0
+<h1>Projet</h1>
+
+<a href="index.php?action=home"><button type="button" class="btn btn-danger">Annuler</button></a>
+
