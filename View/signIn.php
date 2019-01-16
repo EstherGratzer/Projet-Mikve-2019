@@ -1,12 +1,7 @@
-<head>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
-    <link rel="stylesheet" href="../public/css/signIn.css">
-    <title>Sign In Page</title>
-</head>
-
+<?php
+$title = 'SignIn Page'; //on définit le contenu de title pour le mettre dans template.php
+ob_start(); //on définit le contenu de content pour le mettre dans template.php
+?>
 <div class="container">
     <div class="card bg-light">
         <article class="card-body mx-auto" style="max-width: 400px;">
@@ -69,7 +64,23 @@
             </form>
         </article>
     </div> <!-- card.// -->
-
 </div>
 <!--container end.//-->
+<?php $content = ob_get_clean(); ?>
+<?php require('template.php'); ?>
+
+
+
+
+<!--
+<head>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
+    <link rel="stylesheet" href="../public/css/signIn.css">
+    <title>Sign In Page</title>
+</head>
+-->
+
 
