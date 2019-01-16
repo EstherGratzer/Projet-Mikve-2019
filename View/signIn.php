@@ -1,11 +1,3 @@
-<?php
-/**
- * Created by PhpStorm.
- * User: ESG
- * Date: 13/01/2019
- * Time: 13:38
- */
-?>
 <head>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
@@ -15,9 +7,7 @@
     <title>Sign In Page</title>
 </head>
 
-
 <div class="container">
-
     <div class="card bg-light">
         <article class="card-body mx-auto" style="max-width: 400px;">
             <h4 class="card-title mt-3 text-center">Create Account</h4>
