@@ -1,13 +1,27 @@
 <?php
 class Users extends Manager
 {
+
+    const ADMIN_RIGHT_ID = 1;
+    const USER_RIGHT_ID = 3;
+
     public function createUser($firstname, $lastname, $login, $password)
     {
         $db = $this -> dbConnect();
-        $reqNewUser = $db->prepare('INSERT INTO users(firstname, lastname, login, password) VALUES(?, ?, ?, ?)');
-        $newUser = $reqNewUser->execute(array($firstname, $lastname, $login, $password));
+        $reqNewUser = $db->prepare('INSERT INTO users(firstname, lastname, login, password, rights_id) VALUES(?, ?, ?, ?, ?)');
+        $newUser = $reqNewUser->execute(array($firstname, $lastname, $login, $password, self::USER_RIGHT_ID));
         return $newUser;
     }
+
+    public function getByLogin($login){
+        $db = $this -> dbConnect();
+        $reqLogin = $db->query("SELECT login
+                                        FROM users
+                                        WHERE login ='{$login}'");
+        return $reqLogin;
+    }
+
+
     public function updateRightsUser($users_id, $rights_id)
     {
         $db = $this -> dbConnect();

@@ -1,6 +1,7 @@
 <?php
-$title = 'SignIn Page'; //on définit le contenu de title pour le mettre dans template.php
-ob_start(); //on définit le contenu de content pour le mettre dans template.php
+$title = 'SignIn Page';
+$style = '<link rel="stylesheet" href="public/css/signIn.css">';
+ob_start();
 ?>
 <div class="container">
     <div class="card bg-light">
@@ -14,36 +15,44 @@ ob_start(); //on définit le contenu de content pour le mettre dans template.php
             <p class="divider-text">
                 <span class="bg-light">OR</span>
             </p>
-            <form action="index.php?action=sign-up" method="post" enctype="multipart/form-data">
+            <?php
+            if ($errors) {
+                ?>
+            <div class="danger">
+                <ul>
+                    <?php foreach ($errors as $error){ ?>
+                    <li><span><?php echo $error; ?></span></li>
+                    <?php }  ?>
+                </ul>
+            </div>
+            <?php
+            }
+            ?>
+
+            <form action="signIn.php?action=signUp" method="post" enctype="multipart/form-data">
                 <div class="form-group input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                     </div>
-                    <input name="" class="form-control" placeholder="Firstname" type="text">
+                    <input name="firstname" class="form-control" placeholder="Firstname" type="text" value="<?php echo $firstname?>">
                 </div> <!-- form-group// -->
                 <div class="form-group input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-user"></i> </span>
                     </div>
-                    <input name="" class="form-control" placeholder="Lasttname" type="text">
+                    <input name="lastname" class="form-control" placeholder="Lastname" type="text" value="<?php echo $lastname?>">
                 </div> <!-- form-group// -->
                 <div class="form-group input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
                     </div>
-                    <input name="" class="form-control" placeholder="Email address" type="email">
-                </div> <!-- form-group// -->
-                <div class="form-group input-group">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text"> <i class="fa fa-envelope"></i> </span>
-                    </div>
-                    <input name="" class="form-control" placeholder="Confirm your email" type="email">
+                    <input name="login" class="form-control" placeholder="Email address" type="email" value="<?php echo $login?>">
                 </div> <!-- form-group// -->
                 <div class="form-group input-group">
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fa fa-lock"></i> </span>
                     </div>
-                    <input class="form-control" placeholder="Create password" type="password">
+                    <input name="password" class="form-control" placeholder="Create password" type="password">
                 </div> <!-- form-group// -->
                 <div class="form-group input-group">
                     <div class="input-group-prepend">
@@ -60,7 +69,7 @@ ob_start(); //on définit le contenu de content pour le mettre dans template.php
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-block"> Create Account  </button>
                 </div> <!-- form-group// -->
-                <p class="text-center">Have an account? <a href="">Log In</a> </p>
+                <p class="text-center">Have an account? <a href="signIn.php?action=logIn">Log In</a> </p>
             </form>
         </article>
     </div> <!-- card.// -->
@@ -71,16 +80,5 @@ ob_start(); //on définit le contenu de content pour le mettre dans template.php
 
 
 
-
-<!--
-<head>
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/all.css">
-    <link rel="stylesheet" href="../public/css/signIn.css">
-    <title>Sign In Page</title>
-</head>
--->
 
 
