@@ -4,7 +4,8 @@
 //DANS LA TABLE EQUIPEMENTS SUPPRIMER LE CHAMPS MIKVE_ID
 // DANS LA TABLE PRICES SUPPRIMER LE HAMPS MIKVE_ID
 require_once("Model/manager.php");
-class mikve extends manager
+
+class Mikve extends Manager
 {
     public function createMikve($name, $address, $phoneNumber, $openningTimes, $prices_id, $equipements_id, $images_id) // $users_id ???
     {

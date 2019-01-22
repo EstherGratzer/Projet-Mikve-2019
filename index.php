@@ -4,6 +4,9 @@ require("Controller/homeCtrl.php");
 require('Model/manager.php');
 require('Model/user.php');
 
+$user = new Users();
+print_r($user->get(1));
+
 if (isset($_GET['action']))
 {
     call_user_func($_GET['action']);

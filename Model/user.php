@@ -1,10 +1,15 @@
 <?php
-class user extends manager
+class User extends Manager
 {
+
+    public function get($id){
+        $userSql = $this->db->query("SELECT * FROM users WHERE id = '{$id}'");
+        return $userSql->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function createUser($firstname, $lastname, $login, $password)
     {
-        $db = $this -> dbConnect();
-        $reqNewUser = $db->prepare('INSERT INTO users(firstname, lastname, login, password) VALUES(?, ?, ?, ?)');
+        $reqNewUser = $this->$this->prepare('INSERT INTO users(firstname, lastname, login, password) VALUES(?, ?, ?, ?)');
         $newUser = $reqNewUser->execute(array($firstname, $lastname, $login, $password));
         return $newUser;
     }
