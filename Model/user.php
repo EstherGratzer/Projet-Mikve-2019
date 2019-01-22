@@ -9,7 +9,7 @@ class User extends Manager
 
     public function createUser($firstname, $lastname, $login, $password)
     {
-        $reqNewUser = $this->$this->prepare('INSERT INTO users(firstname, lastname, login, password) VALUES(?, ?, ?, ?)');
+        $reqNewUser = $this->db->prepare('INSERT INTO users(firstname, lastname, login, password) VALUES(?, ?, ?, ?)');
         $newUser = $reqNewUser->execute(array($firstname, $lastname, $login, $password));
         return $newUser;
     }
