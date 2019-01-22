@@ -1,5 +1,5 @@
 <?php
-class Users extends Manager
+class user extends manager
 {
     public function createUser($firstname, $lastname, $login, $password)
     {
