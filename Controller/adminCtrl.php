@@ -1,7 +1,7 @@
 <?php
 // Chargement des classes
-require_once('Model/Manager.php');
-require_once('Model/Users.php');
+require_once('Model/manager.php');
+require_once('Model/user.php');
 function index()
 {
     if (isset($_SESSION['user']) && ($_SESSION['user']['rights_id']==1))
@@ -16,7 +16,7 @@ function index()
 }
 function createUser($firstname, $lastname, $login, $password) // OK
 {
-    $user = new Users();
+    $user = new user();
     $affectedLines = $user->createUser($firstname, $lastname, $login, $password);
     if ($affectedLines === false)
     {
@@ -29,7 +29,7 @@ function createUser($firstname, $lastname, $login, $password) // OK
 }
 function updateUserRights($members_id, $rights_id) // OK
 {
-    $user = new Users();
+    $user = new user();
     $affectedLines = $user->updateRights($members_id, $rights_id);
     if ($affectedLines === false)
     {
@@ -42,14 +42,14 @@ function updateUserRights($members_id, $rights_id) // OK
 }
 function listRightsUser() // OK
 {
-    $user = new Users();
+    $user = new user();
     $listRights = $user->getListRightsUser();
     //$nb_Items = $mikve->getCountItems('mikves');
     //require('view/frontend/home.php');
 }
 function deleteUser($users_id) // OK
 {
-    $user = new Users();
+    $user = new user();
     $affectedLines = $user->deleteUser($users_id);
     if ($affectedLines === false)
     {
@@ -62,7 +62,7 @@ function deleteUser($users_id) // OK
 }
 function listUsers() // OK
 {
-    $user = new Users();
+    $user = new user();
     $users = $user->getListUsers();
     $right = new Rights();
     $rights = $right->getListRights();

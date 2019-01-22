@@ -1,8 +1,9 @@
-<?php
+<?php ob_start();
+?> <link rel="stylesheet" href="../public/css/signIn.css"> <?php //grâce au require() on n'a pas besoin de marquer le chemin d'accès entier du fichier qui aurait été href="../../public/css/style.css"
+$style = ob_get_clean();
 $title = 'SignIn Page'; //on définit le contenu de title pour le mettre dans template.php
 ob_start(); //on définit le contenu de content pour le mettre dans template.php
-?>
-<div class="container">
+?> <div class="container">
     <div class="card bg-light">
         <article class="card-body mx-auto" style="max-width: 400px;">
             <h4 class="card-title mt-3 text-center">Create Account</h4>
@@ -64,13 +65,9 @@ ob_start(); //on définit le contenu de content pour le mettre dans template.php
             </form>
         </article>
     </div> <!-- card.// -->
-</div>
-<!--container end.//-->
-<?php $content = ob_get_clean(); ?>
-<?php require('template.php'); ?>
-
-
-
+</div> <!--container end.//--> <?php
+$content = ob_get_clean();
+require('template.php'); ?>
 
 <!--
 <head>

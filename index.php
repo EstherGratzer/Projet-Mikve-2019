@@ -1,8 +1,8 @@
 <?php
 session_start();
 require("Controller/homeCtrl.php");
-require ('Model/Manager.php');
-require ('Model/Users.php');
+require('Model/manager.php');
+require('Model/user.php');
 
 if (isset($_GET['action']))
 {
@@ -23,6 +23,6 @@ else
         <title>Accueil</title>
     </head>
     <body>
-
+        <a href="mikve.php?action=showMikve&amp;mikves_id=3"></a>
     </body>
 </html>
