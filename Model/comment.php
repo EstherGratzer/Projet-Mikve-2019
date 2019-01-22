@@ -1,6 +1,6 @@
 <?php
-require_once("Model/Manager.php");
-class Comments extends Manager
+require_once("Model/manager.php");
+class Comment extends Manager
 {
     public function createComment($comment, $mikves_id, $users_id) // OK
     {
@@ -37,7 +37,7 @@ class Comments extends Manager
                                               comments.mikves_id,
                                               comments.users_id,
                                               mikves.id AS mikves_id,
-                                              users.id,
+                                              users.id AS users_id,
                                               users.firstname,
                                               users.lastname,
                                               users.profil_pic

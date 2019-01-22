@@ -1,11 +1,11 @@
 <?php
 // Chargement des classes
-require_once('Model/Manager.php');
-require_once('Model/Mikves.php');
-require_once('Model/Comments.php');
+require_once('Model/manager.php');
+require_once('Model/mikve.php');
+require_once('Model/comment.php');
 function createMikve($name, $address, $phoneNumber, $openingTimes, $prices_id, $equipements_id, $images_id) // OK
 {
-    $mikve = new Mikves();
+    $mikve = new mikve();
     $affectedLines = $mikve->createMikve($name, $address, $phoneNumber, $openingTimes, $prices_id, $equipements_id, $images_id); // Appel d'une fonction de cet objet
     if ($affectedLines === false)
     {
@@ -18,7 +18,7 @@ function createMikve($name, $address, $phoneNumber, $openingTimes, $prices_id, $
 }
 function updateMikve($mikves_id, $name, $address, $phoneNumber, $openingTimes, $prices_id, $equipements_id, $images_id) // OK
 {
-    $mikve = new Mikves();
+    $mikve = new mikve();
     $affectedLines = $mikve->updateMikve($mikves_id, $name, $address, $phoneNumber, $openingTimes, $prices_id, $equipements_id, $images_id);
     if ($affectedLines === false)
     {
@@ -31,7 +31,7 @@ function updateMikve($mikves_id, $name, $address, $phoneNumber, $openingTimes, $
 }
 function deleteMikve($mikves_id) // OK
 {
-    $mikve = new Mikves();
+    $mikve = new mikve();
     $affectedLines = $mikve->deleteMikve($mikves_id);
     if ($affectedLines === false)
     {
@@ -44,7 +44,7 @@ function deleteMikve($mikves_id) // OK
 }
 function listMikves() // OK
 {
-    $mikve = new Mikves();
+    $mikve = new mikve();
     if (isset($_GET['page']))
     {
         $start = ($_GET['page']*2)-2;
@@ -57,17 +57,22 @@ function listMikves() // OK
     //$nb_Items = $mikve->getCountItems('mikves');
     //require('view/frontend/home.php');
 }
-function showMikve($mikves_id) // OK
+function showMikve() // OK
 {
-    $mikve = new Mikves();
-    $post = $mikve->getOneMikve($mikves_id, 0);
-    $comment = new Comments();
-    $answers = $comment->getListComments($mikves_id, 0);
-    //require('view/frontend/subject.php');
+    if (isset($_GET['mikves_id']))
+    {
+        $mikves_id = $_GET['mikves_id'];
+        $tables_id = 1;
+        $mikve = new mikve();
+        $mikveArray = $mikve->getOneMikve($mikves_id, $tables_id);
+        $comment = new comment();
+        $listComments = $comment->getListComments($mikves_id, 0);
+        require('View/mikve.php');
+    }
 }
 function createComment($comment, $mikves_id, $users_id) //OK
 {
-    $comment = new Comments();
+    $comment = new comment();
     $affectedLines = $comment->createComment($comment, $mikves_id, $users_id);
     if ($affectedLines === false)
     {
@@ -80,7 +85,7 @@ function createComment($comment, $mikves_id, $users_id) //OK
 }
 function updateComment($comments_id, $comment) // OK
 {
-    $comment = new Comments();
+    $comment = new comment();
     $affectedLines = $comment->updateComment($comments_id, $comment);
     if ($affectedLines === false)
     {
@@ -93,7 +98,7 @@ function updateComment($comments_id, $comment) // OK
 }
 function deleteComment($mikve_id, $comments_id) // OK
 {
-    $comment = new Comments();
+    $comment = new comment();
     $affectedLines = $comment->deleteComment($comments_id, 0);
     if ($affectedLines === false)
     {
@@ -106,7 +111,7 @@ function deleteComment($mikve_id, $comments_id) // OK
 }
 function listComments($mikves_id) //
 {
-    $comment = new Comments();
+    $comment = new comment();
     if (isset($_GET['page']))
     {
         $start = ($_GET['page']*2)-2;
