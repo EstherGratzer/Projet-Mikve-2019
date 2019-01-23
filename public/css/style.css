@@ -1,3 +1,7 @@
+.hidden{
+    display: none;
+}
+
 .img_user
 {
     width: 37px;
@@ -18,4 +22,8 @@
 .carousel-item-next,
 .carousel-item-prev {
     display: block;
+}
+.table-striped>tbody>tr:nth-child(odd)>td,
+.table-striped>tbody>tr:nth-child(odd)>th {
+    background-color: #e3f2fd; // Choose your own color here
 }

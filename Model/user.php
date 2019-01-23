@@ -13,6 +13,17 @@ class User extends Manager
         $newUser = $reqNewUser->execute(array($firstname, $lastname, $login, $password));
         return $newUser;
     }
+
+    public function getAdmin($login, $password)
+    {
+        $db = $this -> dbConnect();
+        $reqLogAdmin = $db->query("SELECT * FROM users 
+                                          WHERE login = '{$login}' AND password = '{$password}' AND rights_id = 1");
+        //var_dump($reqLogAdmin);
+
+        return $reqLogAdmin->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function updateRightsUser($users_id, $rights_id)
     {
         $db = $this -> dbConnect();
@@ -22,6 +33,7 @@ class User extends Manager
         $affectedLines = $right->execute(array($rights_id, $users_id));
         return $affectedLines;
     }
+
     public function getListRightsUser() // OK
     {
         $db = $this->dbConnect();
@@ -30,6 +42,7 @@ class User extends Manager
                             ORDER BY id");
         return $req;
     }
+
     public function deleteUser($users_id)
     {
         $db = $this->dbConnect();
@@ -39,12 +52,14 @@ class User extends Manager
         return $req;
         //La requête marche en théorie mais dans la pratique c'est impossible car le membre a des subjects et des answers donc on peut pas le supprimer sans supprimer celles-ci
     }
+
     public function getListUsers()
     {
-        $db = $this->dbConnect(); // même si la méthode dbConnect() est privée on est autorisé à l'appeller puisqu'on est à l'intérieur de la classe
-        $req = $db->query("SELECT *
+        $db = $this->dbConnect();
+        $reqListUsers = $db->query("SELECT users.*, rights.name
                             FROM users
-                            ORDER BY id");
-        return $req;
+                            JOIN rights ON users.rights_id = rights.id
+                            ORDER BY users.id");
+        return $reqListUsers;
     }
 }

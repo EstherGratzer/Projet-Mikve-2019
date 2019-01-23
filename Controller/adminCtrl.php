@@ -1,9 +1,12 @@
 <?php
+session_start();
 // Chargement des classes
 require_once('Model/manager.php');
 require_once('Model/user.php');
 function index()
 {
+    $showLoginForm = true;
+
     if (isset($_SESSION['user']) && ($_SESSION['user']['rights_id']==1))
     {
         $showLoginForm = false;
@@ -14,6 +17,38 @@ function index()
     }
     require("View/admin.php");
 }
+
+function login()
+{
+    if(!empty ($_POST['Login']) && !empty ($_POST['Password']))
+    {
+        $user = new Users();
+        $getAdmin = $user->getAdmin($_POST['Login'], $_POST['Password']);
+
+        if ($getAdmin == false)
+        {
+            throw new Exception('Vous n\'avez pas les droits suffisants à la connexion' );
+        }
+        else
+        {
+            $_SESSION['user'] = $getAdmin;
+            $showLoginForm = false;
+            require("View/homeAdmin.php");
+            //header('location:index.php?action=displayAdmin');
+        }
+    }
+    else
+    {
+        $message = '
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="alert alert-danger">Veuillez saisir un login et/ou mot de passe</div>
+                </div>
+            </div>';
+        include('view/admin.php');
+    }
+}
+
 function createUser($firstname, $lastname, $login, $password) // OK
 {
     $user = new user();
@@ -27,6 +62,7 @@ function createUser($firstname, $lastname, $login, $password) // OK
         //header('Location: index.php?action=showSubject&id='.$subjects_id);
     }
 }
+
 function updateUserRights($members_id, $rights_id) // OK
 {
     $user = new user();
@@ -40,6 +76,7 @@ function updateUserRights($members_id, $rights_id) // OK
         //header('Location: index.php?action=listMembers');
     }
 }
+
 function listRightsUser() // OK
 {
     $user = new user();
@@ -47,6 +84,7 @@ function listRightsUser() // OK
     //$nb_Items = $mikve->getCountItems('mikves');
     //require('view/frontend/home.php');
 }
+
 function deleteUser($users_id) // OK
 {
     $user = new user();
@@ -60,19 +98,19 @@ function deleteUser($users_id) // OK
         //header('Location: index.php?action=listMembers');
     }
 }
+
 function listUsers() // OK
 {
-    $user = new user();
-    $users = $user->getListUsers();
-    $right = new Rights();
-    $rights = $right->getListRights();
-    if ($users === false)
+    $user = new User();
+    $reqListUsers = $user->getListUsers();
+
+    if ($reqListUsers === false)
     {
-        throw new Exception('Impossible d\'afficher les membres du forum !');
+        throw new Exception('Impossible d\'afficher la liste des Utilisateurs !');
     }
     else
     {
-        //require('view/frontend/admin.php');
+        require('View/adminListUsers.php');
     }
 }
 
