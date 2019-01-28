@@ -10,8 +10,7 @@ class Halaha extends Manager
 {
     public function get()
     {
-        $bdd = $this->dbConnect();
-        $req = $bdd->query("SELECT * FROM halahotes" );
+        $req = $this->db->query("SELECT * FROM halahotes" );
         return $req;
     }
 }

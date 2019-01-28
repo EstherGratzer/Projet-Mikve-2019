@@ -3,6 +3,7 @@ session_start();
 // Chargement des classes
 require_once('Model/manager.php');
 require_once('Model/user.php');
+require_once('Model/rights.php');
 function index()
 {
     $showLoginForm = true;
@@ -22,7 +23,7 @@ function login()
 {
     if(!empty ($_POST['Login']) && !empty ($_POST['Password']))
     {
-        $user = new Users();
+        $user = new User();
         $getAdmin = $user->getAdmin($_POST['Login'], $_POST['Password']);
 
         if ($getAdmin == false)
@@ -49,6 +50,80 @@ function login()
     }
 }
 
+function listUsers() // OK
+{
+    $user = new User();
+    $reqListUsers = $user->getListUsers();
+    $type = $user->type;
+    if ($reqListUsers === false)
+    {
+        throw new Exception('Impossible d\'afficher la liste des Utilisateurs !');
+    }
+    else
+    {
+        require('View/adminListUsers.php');
+    }
+}
+
+function edit()
+{
+    switch ($_GET['type']){
+        case 'users':
+            editUser();
+            break;
+
+        case 'halahotes':
+            editHalahotes();
+            break;
+    }
+
+}
+
+function editUser()
+{
+    //je recupere l'idUser, et dans la requete je fait un select * de users pour tout reafficher dans le formulaire
+    if (isset($_GET['id']))
+        {
+            $userId = $_GET['id'];
+
+            $User = new User();
+            $userToEdit = $User->get($userId);
+
+            if (count($userToEdit)>0)
+            {
+                $rights = new  Right();
+                $rightList = $rights->find();
+            }
+        }
+
+        if ($userToEdit === false)
+        {
+            echo'Impossible d\'afficher l\'utilisateur !';
+        }
+        else {
+            require('View/adminFormUsers.php');
+
+        }
+}
+
+function updateUser()
+{
+    if (isset($_POST))
+    {
+
+        $User = new User;
+        $updateUser = $User->updateUser($_POST);
+    }
+
+    if ($updateUser === false)
+    {
+        echo'Impossible de modifier l\'utilisateur !';
+    }
+    else {
+        listUsers();
+
+    }
+
 function createUser($firstname, $lastname, $login, $password) // OK
 {
     $user = new user();
@@ -65,7 +140,7 @@ function createUser($firstname, $lastname, $login, $password) // OK
 
 function updateUserRights($members_id, $rights_id) // OK
 {
-    $user = new user();
+    $user = new User();
     $affectedLines = $user->updateRights($members_id, $rights_id);
     if ($affectedLines === false)
     {
@@ -99,18 +174,6 @@ function deleteUser($users_id) // OK
     }
 }
 
-function listUsers() // OK
-{
-    $user = new User();
-    $reqListUsers = $user->getListUsers();
 
-    if ($reqListUsers === false)
-    {
-        throw new Exception('Impossible d\'afficher la liste des Utilisateurs !');
-    }
-    else
-    {
-        require('View/adminListUsers.php');
-    }
+
 }
-

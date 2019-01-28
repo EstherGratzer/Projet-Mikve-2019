@@ -2,6 +2,16 @@
     display: none;
 }
 
+/*.addSuppUsers{
+    text-align: center;
+}*/
+
+#adminFormUsers{
+    max-width: 400px;
+    padding: 15px;
+    margin: 0 auto;
+}
+
 .img_user
 {
     width: 37px;
@@ -23,7 +33,8 @@
 .carousel-item-prev {
     display: block;
 }
+
 .table-striped>tbody>tr:nth-child(odd)>td,
 .table-striped>tbody>tr:nth-child(odd)>th {
-    background-color: #e3f2fd; // Choose your own color here
+    background-color: #e3f2fd; /*Choose your own color here*/
 }

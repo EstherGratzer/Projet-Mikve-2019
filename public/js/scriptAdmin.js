@@ -29,7 +29,7 @@ $(function()
 
     });
 
-    $('ul.navbar-nav li a').on("click", function(e)
+    $(document).on("click", "ul.navbar-nav li a", function(e)
     {
         var action = $(this).data("action");
         $.ajax({
@@ -45,6 +45,24 @@ $(function()
             }
 
         });
+    });
+
+    $(document).on('click', 'span.edit', function(){
+        var elementIdToShow = $(this).data("href");
+        if ($('#'+elementIdToShow).hasClass('hidden')){
+            $.ajax({
+                url:"admin.php?action=edit",
+                method:"GET",
+                data:{id: $(this).data('id'), type : $('#list').data('type')},
+
+                success:function(data){
+                    console.log(data);
+                    $('#' + elementIdToShow).find('td').html(data);
+                }
+            });
+        }
+        $('#'+elementIdToShow).toggleClass('hidden');
+
     });
 
 });
