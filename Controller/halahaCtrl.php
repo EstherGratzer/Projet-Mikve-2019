@@ -14,15 +14,22 @@ function index()
 
 function getHalaha()
 {
-    $halahaClass = new Halaha;
-    $req = $halahaClass ->get();
+    $halahaClass = new halaha;
+    $options = [];
+    if(isset($_GET['currentHalaha'])) {
+        $options['currentHalaha'] = $_GET['currentHalaha'];
+    }
+    $req = $halahaClass ->find($options);
     $halahotes = $req->fetchAll(PDO::FETCH_ASSOC);
     $halahaRandomKey = array_rand($halahotes, 1);
     $halaha = $halahotes[$halahaRandomKey];
-    require('View/halahotes.php');
+    if(isset($_GET['isAjax'])){
+        require ('View/halahaContent.php');
+    } else {
+        require('View/halahotes.php');
+    }
 
 }
-
 
 
 ?>

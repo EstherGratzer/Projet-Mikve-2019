@@ -4,7 +4,6 @@ $(function()
     $("#connection").on("click", function(e)
     {
         e.preventDefault();
-
         if($("#Login").val() === '' || $("#Password").val() === '')
         {
             $("div.container.admin.login").find("div.alert-danger").removeClass('hidden').text('Veuillez renseigner un Login et/ou un Mot de passe');
@@ -15,21 +14,17 @@ $(function()
                 url: "admin.php?action=login",
                 type: "POST",
                 data: $(this).closest('form').serialize(),
-
                 success : function(resultAdmin){
                     $("body").html(resultAdmin);
                 },
-
                 error : function () {
                     alert('Une erreur s\'est produite');
                 }
-
             });
         }
-
     });
 
-    $('ul.navbar-nav li a').on("click", function(e)
+    $(document).on("click","ul.navbar-nav li a", function(e)
     {
         var action = $(this).data("action");
         $.ajax({
@@ -47,23 +42,61 @@ $(function()
         });
     });
 
-    $('div.buttons button.btn-success').on("click", function(e)
-    {
+     $(document).on('click', 'span.delete-halaha', function(){
+         var halahaToDelete = $(this).data('halaha');
+         if(confirm("Etes vous sur de supprimer?"))
+         {
+             $.ajax({
+                 url:"admin.php?action=deleteHalaha",
+                 method:"POST",
+                 data:{id: halahaToDelete.id},
+
+                 success:function(data){
+                     $('#alert_message').html('<div class="alert alert-success">La Halaha "' +  halahaToDelete.titre +'" a ete supprimée!</div>');
+                     $('.halaha-'+halahaToDelete.id).fadeOut();
+                 }
+             });
+         }
+     });
+
+    $("form.newEdit").submit(function(e) {
+        e.preventDefault();
+        var formData = new FormData($(this)[0]);
         $.ajax({
-            url: "admin.php?action=updateEquipement",
             type: "POST",
-
-            success : function(resultUpdateEquipement){
-                alert('test');
-            },
-
-            error : function () {
-                alert('Une erreur s\'est produite');
+            url: "admin.php?action=updateHalaha",
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success:function( msg ) {
+                window.location('admin.php?action=listHalahotes')
             }
-
         });
+        return false;
+    });
+
+
+    $(document).on('click', 'span.edit', function(){
+        var elementIdToShow = $(this).data("href");
+        if ($('#'+elementIdToShow).hasClass('hidden')){
+            $.ajax({
+                url:"admin.php?action=edit",
+                method:"GET",
+                data:{id: $(this).data('id'), type : $('#list').data('type')},
+
+                success:function(data){
+                    console.log(data);
+                    $('#' + elementIdToShow).find('td').html(data);
+                }
+            });
+        }
+        $('#'+elementIdToShow).toggleClass('hidden');
+
     });
 
 });
+
+
 
 

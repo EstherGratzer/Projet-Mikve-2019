@@ -5,9 +5,9 @@
                 <a class="navbar-brand" href="#">Mikve Admin</a>
             </div>
             <ul class="nav navbar-nav">
-                <li><a href="#" data-action="mikve">Gestion Mikve</a></li>
+                <li><a href="#" data-action="listMikves">Gestion Mikve</a></li>
                 <li><a href="#" data-action="listUsers">Gestion Utilisateurs</a></li>
-                <li><a href="#" data-action="halahot">Gestion Halah'ot</a></li>
+                <li><a href="#" data-action="listHalahotes">Gestion Halah'ot</a></li>
                 <li><a href="#" data-action="listEquipements">Gestion Equipements</a></li>
             </ul>
         </div>
@@ -18,5 +18,4 @@
         <h2>Bienvenue <?php echo $_SESSION['user']['firstname'] ?></h2>
     </div>
     <div class="listContent hidden"></div>
-
 </div>

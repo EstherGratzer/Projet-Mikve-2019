@@ -3,60 +3,20 @@
 require_once('Model/manager.php');
 require_once('Model/mikve.php');
 require_once('Model/comment.php');
-
-function createMikve($name, $address, $phoneNumber, $openingTimes, $prices_id, $equipements_id, $images_id) // OK
-{
-    $mikve = new mikve();
-    $affectedLines = $mikve->createMikve($name, $address, $phoneNumber, $openingTimes, $prices_id, $equipements_id, $images_id); // Appel d'une fonction de cet objet
-    if ($affectedLines === false)
-    {
-        throw new Exception('Impossible d\'ajouter le nouveau mikve !');
-    }
-    else
-    {
-        //header('Location: index.php?action=listSubjects');
-    }
-}
-function updateMikve($mikves_id, $name, $address, $phoneNumber, $openingTimes, $prices_id, $equipements_id, $images_id) // OK
-{
-    $mikve = new mikve();
-    $affectedLines = $mikve->updateMikve($mikves_id, $name, $address, $phoneNumber, $openingTimes, $prices_id, $equipements_id, $images_id);
-    if ($affectedLines === false)
-    {
-        throw new Exception('Impossible de modifier le mikve !');
-    }
-    else
-    {
-        //header('Location: index.php?action=listSubject');
-    }
-}
-function deleteMikve($mikves_id) // OK
-{
-    $mikve = new mikve();
-    $affectedLines = $mikve->deleteMikve($mikves_id);
-    if ($affectedLines === false)
-    {
-        throw new Exception('Impossible de supprimer le mikve !');
-    }
-    else
-    {
-        //header('Location: index.php?action=listSubjects');
-    }
-}
 function listMikves() // OK
 {
     $mikve = new mikve();
-    if (isset($_GET['page']))
-    {
-        $start = ($_GET['page']*2)-2;
-        $listMikves = $mikve->getListMikves($start);
-    }
-    else
-    {
-        $listMikves = $mikve->getListMikves(0);
-    }
+    //if (isset($_GET['page']))
+    //{
+      //  $start = ($_GET['page']*2)-2;
+       // $listMikves = $mikve->getListMikves($start);
+    //}
+    //else
+    //{
+        $listMikves = $mikve->getListMikves();
+    //}
     //$nb_Items = $mikve->getCountItems('mikves');
-    //require('view/frontend/home.php');
+    require('view/mikveList.php');
 }
 function showMikve() // OK
 {

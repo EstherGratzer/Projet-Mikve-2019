@@ -1,0 +1,13 @@
+[id^=mikves_id_]
+{
+    border: grey solid 1px;
+    border-radius: 5px;
+    box-shadow: 4px 3px 9px lightgrey;
+    text-align: center;
+    margin:10px;
+    padding: 0px 0px 0px 0px;
+}
+[id^=mikves_id_] img
+{
+    margin: 0px 0px 10px 0px;
+}
