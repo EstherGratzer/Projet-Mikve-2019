@@ -7,7 +7,7 @@
             <ul class="nav navbar-nav">
                 <li><a href="#" data-action="mikve">Gestion Mikve</a></li>
                 <li><a href="#" data-action="listUsers">Gestion Utilisateurs</a></li>
-                <li><a href="#" data-action="halahot">Gestion Halah'ot</a></li>
+                <li><a href="#" data-action="listHalahotes">Gestion Halah'ot</a></li>
             </ul>
         </div>
     </div>
