@@ -64,26 +64,6 @@ $(function()
          }
      });
 
-    $(document).on('click', 'span.edit', function(){
-        var elementIdToShow = $(this).data("href");
-        $('#'+elementIdToShow).toggleClass('hidden');
-
-        // var halahaToDelete = $(this).data('halaha');
-        // if(confirm("Etes vous sur de supprimer?"))
-        // {
-        //     $.ajax({
-        //         url:"admin.php?action=deleteHalaha",
-        //         method:"POST",
-        //         data:{id: halahaToDelete.id},
-        //
-        //         success:function(data){
-        //             $('#alert_message').html('<div class="alert alert-success">La Halaha "' +  halahaToDelete.titre +'" a ete supprimée!</div>');
-        //             $('.halaha-'+halahaToDelete.id).fadeOut();
-        //         }
-        //     });
-        // }
-    });
-
     $("form.newEdit").submit(function(e) {
         e.preventDefault();
         var formData = new FormData($(this)[0]);
@@ -100,6 +80,26 @@ $(function()
         });
         return false;
     });
+
+
+    $(document).on('click', 'span.edit', function(){
+        var elementIdToShow = $(this).data("href");
+        if ($('#'+elementIdToShow).hasClass('hidden')){
+            $.ajax({
+                url:"admin.php?action=edit",
+                method:"GET",
+                data:{id: $(this).data('id'), type : $('#list').data('type')},
+
+                success:function(data){
+                    console.log(data);
+                    $('#' + elementIdToShow).find('td').html(data);
+                }
+            });
+        }
+        $('#'+elementIdToShow).toggleClass('hidden');
+
+    });
+
 });
 
 
