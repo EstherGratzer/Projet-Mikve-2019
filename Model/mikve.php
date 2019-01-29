@@ -29,19 +29,16 @@ class Mikve extends Manager
         $req->execute(array($mikves_id));
         return $req;
     }
-    public function getListMikves($start) //
+    public function getListMikves() //
     {
-        $req = $this->db->query("SELECT mikves.id AS mikves_id,
-                                mikves.name,
-                                mikves.address,
-                                mikves.images_id,
-                                images.id AS images_id
-                                images.name
-                            FROM mikves
-                            INNER JOIN images
-                            WHERE mikves.images_id = images.id
-                            ORDER BY ????? DESC");//LIMIT ".$start.", 2" // la table images n'existe pas mais medias existe
-        return $req;
+        $db = $this->dbConnect();
+        $sqlMikves = $db->query("SELECT mikves.*,
+                                                  medias.*
+                                            FROM mikves
+                                            INNER JOIN medias
+                                            WHERE mikves.couv_id = medias.id
+                                            ORDER BY mikves.name DESC");//LIMIT ".$start.", 2" // la table images n'existe pas mais medias existe
+        return $sqlMikves;
     }
     public function getOneMikve($mikves_id, $tables_id) // OK
     {
@@ -56,7 +53,8 @@ class Mikve extends Manager
         $sqlMikve->closeCursor();
         $mikveArray['infos'] = $mikveInfos;
 
-        $sqlEquipements = $this->db->prepare("SELECT equipements.name
+        $sqlEquipements = $this->db->prepare("SELECT equipements.name,
+                                                        mikveequipements.price  
                                                   FROM equipements
                                                   JOIN mikveequipements
                                                   ON equipements.id = mikveequipements.equipements_id
@@ -75,48 +73,18 @@ class Mikve extends Manager
         $sqlImages->closeCursor();
         $mikveArray['images'] = $mikveImages;
 
+        $db = $this->dbConnect();
+        $sqlCouv = $db->prepare("SELECT mikves.*,
+                                                  medias.*
+                                            FROM mikves
+                                            JOIN medias
+                                            ON mikves.couv_id = medias.id
+                                           WHERE mikves.id = ?") or die(print_r($db->errorInfo())); // la table images n'existe pas mais medias existe
+        $sqlCouv->execute(array($mikves_id));
+        $mikveCouv = $sqlCouv->fetch(PDO::FETCH_ASSOC);
+        $sqlCouv->closeCursor();
+        $mikveArray['photo_couv'] = $mikveCouv;
+
         return $mikveArray;
     }
 }
-
-/*
- *
- * $db = $this->dbConnect();
-        $req = $db->prepare("SELECT mikves.*,
-                                              medias.*,
-                                              mikveequipements.*,
-                                              equipements.name
-                                              FROM `mikves`
-                                              JOIN medias
-                                              ON medias.types_id = mikves.id
-                                              JOIN mikveequipements
-                                              ON mikveequipements.mikves_id = mikves.id
-                                              JOIN equipements
-                                              ON mikveequipements.equipements_id = mikveequipements.equipements_id
-                                              WHERE medias.tables_id = 1
-                                              AND mikves.id = 3") or die(print_r($db->errorInfo())); // la table images n'existe pas mais medias existe
-        $req->execute(array($mikves_id, $tables_id));
-        $mikves= $req->fetch();
-        return $mikves;
- *
- *
- *
- *
- *
- *
- *
-                                              SELECT mikves.*
-                                              GROUP_CONCAT(DISTINCT equipements.name) AS equipements__name,
-                                              GROUP_CONCAT(DISTINCT medias.path) AS medias__path
-                                        FROM mikves
-                                        INNER JOIN mikveequipements
-                                        ON mikves.id = mikveequipements.mikves_id
-                                        INNER JOIN equipements
-                                        ON equipements.id = mikveequipements.equipements_id
-                                        INNER JOIN medias
-                                        ON mikves.id = medias.types_id
-                                        INNER JOIN tables
-                                        ON tables.id = medias.tables_id
-                                        WHERE mikves.id = ?
-                                        GROUP BY mikveequipements.mikves_id
- */

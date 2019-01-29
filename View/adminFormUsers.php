@@ -38,7 +38,7 @@
                             <?php
                             foreach ($rightList as $right){
                                 ?>
-                                <option value="<?php echo $right['id']?>" <?if($right['id'] == $userToEdit['rights_id']) {?> selected <?php }?>"><?php echo $right['name']?></option>
+                                <option value="<?php echo $right['id']?>" <?php if($right['id'] == $userToEdit['rights_id']) { ?> selected <?php }?>><?php echo $right['name']; ?></option>
                                 <?php
                             }
                             ?>

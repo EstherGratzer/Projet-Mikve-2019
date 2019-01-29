@@ -4,7 +4,6 @@ $(function()
     $("#connection").on("click", function(e)
     {
         e.preventDefault();
-
         if($("#Login").val() === '' || $("#Password").val() === '')
         {
             $("div.container.admin.login").find("div.alert-danger").removeClass('hidden').text('Veuillez renseigner un Login et/ou un Mot de passe');
@@ -15,18 +14,14 @@ $(function()
                 url: "admin.php?action=login",
                 type: "POST",
                 data: $(this).closest('form').serialize(),
-
                 success : function(resultAdmin){
                     $("body").html(resultAdmin);
                 },
-
                 error : function () {
                     alert('Une erreur s\'est produite');
                 }
-
             });
         }
-
     });
 
     $(document).on("click","ul.navbar-nav li a", function(e)

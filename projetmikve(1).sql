@@ -183,7 +183,7 @@ CREATE TABLE `pages` (
 
 INSERT INTO `pages` (`id`, `name`, `url`) VALUES
 (1, 'index.php', 'http://localhost/DeveloppersInstitute/Projet-Mikve-2019/index.php'),
-(2, 'listMikves.php', 'http://localhost/DeveloppersInstitute/Projet-Mikve-2019/listMikves.php'),
+(2, 'mikveList.php', 'http://localhost/DeveloppersInstitute/Projet-Mikve-2019/mikveList.php'),
 (3, 'mikve.php', 'http://localhost/DeveloppersInstitute/Projet-Mikve-2019/mikve.php');
 
 -- --------------------------------------------------------

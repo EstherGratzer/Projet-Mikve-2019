@@ -3,12 +3,13 @@ session_start();
 // Chargement des classes
 require_once('Model/manager.php');
 require_once('Model/user.php');
+require_once('Model/mikve.php');
 require_once('Model/halaha.php');
 require_once('Model/rights.php');
 function index()
 {
+    //require ("View/adminFormMikves.php");
     $showLoginForm = true;
-
     if (isset($_SESSION['user']) && ($_SESSION['user']['rights_id']==1))
     {
         $showLoginForm = false;
@@ -19,14 +20,12 @@ function index()
     }
     require("View/admin.php");
 }
-
 function login()
 {
     if(!empty ($_POST['Login']) && !empty ($_POST['Password']))
     {
         $user = new User();
         $getAdmin = $user->getAdmin($_POST['Login'], $_POST['Password']);
-
         if ($getAdmin == false)
         {
             throw new Exception('Vous n\'avez pas les droits suffisants à la connexion' );
@@ -50,6 +49,8 @@ function login()
         include('view/admin.php');
     }
 }
+
+
 
 function listUsers() // OK
 {
@@ -191,4 +192,71 @@ function updateHalaha()
     print_r($_FILES);
     $editHalaha = new Halaha();
     $reqEditHalaha = $editHalaha->edit($_POST, $_FILES);
+}
+
+function listMikves() // OK
+{
+    $mikve = new mikve();
+    //if (isset($_GET['page']))
+    //{
+    //  $start = ($_GET['page']*2)-2;
+    // $listMikves = $mikve->getListMikves($start);
+    //}
+    //else
+    //{
+    $reqListMikves = $mikve->getListMikves();
+    //}
+    //$nb_Items = $mikve->getCountItems('mikves');
+    require('view/adminListMikves.php');
+}
+function createMikve($name, $address, $phoneNumber, $openingTimes, $prices_id, $equipements_id, $images_id) // OK
+{
+    $mikve = new mikve();
+    $affectedLines = $mikve->createMikve($name, $address, $phoneNumber, $openingTimes, $prices_id, $equipements_id, $images_id); // Appel d'une fonction de cet objet
+    if ($affectedLines === false)
+    {
+        throw new Exception('Impossible d\'ajouter le nouveau mikve !');
+    }
+    else
+    {
+        //header('Location: index.php?action=listSubjects');
+    }
+}
+function editMikve() // OK
+{
+    //http://localhost/DeveloppersInstitute/Projet-Mikve-2019/admin.php?action=editMikve&mikves_id=3
+    if (isset($_GET['mikves_id']))
+    {
+        $mikves_id = $_GET['mikves_id'];
+        $tables_id = 1;
+        $mikve = new mikve();
+        $mikveArray = $mikve->getOneMikve($mikves_id, $tables_id);
+        require('View/adminFormMikves.php');
+    }
+}
+function updateMikve($mikves_id, $name, $address, $phoneNumber, $openingTimes, $prices_id, $equipements_id, $images_id) // OK
+{
+    $mikve = new mikve();
+    $affectedLines = $mikve->updateMikve($mikves_id, $name, $address, $phoneNumber, $openingTimes, $prices_id, $equipements_id, $images_id);
+    if ($affectedLines === false)
+    {
+        throw new Exception('Impossible de modifier le mikve !');
+    }
+    else
+    {
+        //header('Location: index.php?action=listSubject');
+    }
+}
+function deleteMikve($mikves_id) // OK
+{
+    $mikve = new mikve();
+    $affectedLines = $mikve->deleteMikve($mikves_id);
+    if ($affectedLines === false)
+    {
+        throw new Exception('Impossible de supprimer le mikve !');
+    }
+    else
+    {
+        //header('Location: index.php?action=listSubjects');
+    }
 }

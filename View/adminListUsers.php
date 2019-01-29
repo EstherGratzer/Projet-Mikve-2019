@@ -15,8 +15,7 @@
             <tbody>
             <?php
             while ($users = $reqListUsers->fetch())
-            {
-                ?>
+            { ?>
                 <tr>
                     <td><?=$users['lastname'] ?></td>
                     <td><?= $users['firstname']?></td>
@@ -28,8 +27,7 @@
                 <tr class="hidden" id="formEdit<?=$users['id'] ?>">
                     <td colspan="6"></td>
                 </tr>
-                <?php
-            }
+            <?php }
             $reqListUsers->closeCursor();
             ?>
             </tbody>
