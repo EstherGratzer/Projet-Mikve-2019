@@ -1,0 +1,15 @@
+.carousel-inner img {
+    width: 80%;
+    height: 450px;
+}
+
+.categories img {
+    width: 100%;
+    height: 230px;
+    border-radius: 5px;
+}
+
+.dropdown-menu {
+    right: 0;
+    left: auto;
+}

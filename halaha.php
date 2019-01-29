@@ -1,6 +1,8 @@
 <?php
 session_start();
-require("Controller/mikveCtrl.php");
+require("Controller/halahaCtrl.php");
+require ('Model/Manager.php');
+
 
 if (isset($_GET['action']))
 {
@@ -10,4 +12,5 @@ else
 {
     index();
 }
+
 ?>

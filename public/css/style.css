@@ -1,0 +1,29 @@
+.hidden{
+    display: none;
+}
+
+.img_user
+{
+    width: 37px;
+    border-radius: 43px;
+}
+
+.carousel-inner {
+    background-color: #77889936;
+}
+
+.carousel-inner img{
+    width: 1000px;
+    height: 350px;
+    margin: auto;
+}
+
+.carousel-item.active,
+.carousel-item-next,
+.carousel-item-prev {
+    display: block;
+}
+.table-striped>tbody>tr:nth-child(odd)>td,
+.table-striped>tbody>tr:nth-child(odd)>th {
+    background-color: #e3f2fd; // Choose your own color here
+}

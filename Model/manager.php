@@ -2,6 +2,14 @@
 
 class Manager
 {
+
+    public $db;
+
+    public function __construct()
+    {
+        $this->db = $this->dbConnect();
+    }
+
     protected function dbConnect()
     {
         $ini = parse_ini_file('config.ini');
