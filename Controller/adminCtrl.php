@@ -33,7 +33,8 @@ function login()
         }
         else
         {
-            $_SESSION['user'] = $getAdmin;
+            $currentUser = $user->get($getAdmin['id']);
+            $_SESSION['user'] = $currentUser;
             $showLoginForm = false;
             require("View/homeAdmin.php");
             //header('location:index.php?action=displayAdmin');
