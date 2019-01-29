@@ -47,7 +47,7 @@ class Mikve extends Manager
 
         $sqlMikve = $this->db->prepare("SELECT mikves.*
                                             FROM mikves
-                                           WHERE mikves.id = ?") or die(print_r($db->errorInfo())); // la table images n'existe pas mais medias existe
+                                           WHERE mikves.id = ?") or die(print_r($this->db->errorInfo())); // la table images n'existe pas mais medias existe
         $sqlMikve->execute(array($mikves_id));
         $mikveInfos = $sqlMikve->fetch(PDO::FETCH_ASSOC);
         $sqlMikve->closeCursor();
