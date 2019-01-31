@@ -97,8 +97,8 @@ $(function()
 
     $(document).on('submit', 'form.editEquipement', function(e) {
         e.preventDefault();
-        var objectId = $('input[name = "idEquip"]').val(),
-            newName = $('input[name = "newName"]').val();
+        var objectId =  $(this).find('.equipement-id').val(),
+            newName = $('#newName' + objectId).val();
         $.ajax({
             type: "GET",
             url: "admin.php?action=updateEquipement",
@@ -110,6 +110,8 @@ $(function()
         });
         return false;
     });
+
+
     $(document).on('submit', '#adminFormUsers', function(e){
         var userId = $(this).find('.user-id').val(); //$('#idUser').val();
         var lastname = $("#lastname" + userId).val();

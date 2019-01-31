@@ -66,6 +66,10 @@ function edit()
         case 'mikve':
             editMikve();
             break;
+
+        case 'equipements':
+            editEquipement();
+            break;
     }
 
 }
@@ -87,7 +91,7 @@ function delete()
             break;
 
         case 'equipements':
-            editEquipement();
+            deleteEquipement();
             break;
     }
 }
