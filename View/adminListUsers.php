@@ -15,14 +15,16 @@
             <tbody>
             <?php
             while ($users = $reqListUsers->fetch())
-            { ?>
-                <tr>
-                    <td><?=$users['lastname'] ?></td>
-                    <td><?= $users['firstname']?></td>
-                    <td><?= $users['login']?></td>
-                    <td><?= $users['name']?></td>
+            {
+                $jsonUser = json_encode($users);
+                ?>
+                <tr class="objectId<?=$users['id'] ?>">
+                    <td><span class="lastname<?=$users['id'] ?>"><?=$users['lastname'] ?></span></td>
+                    <td><span class="firstname<?=$users['id'] ?>"><?= $users['firstname']?></span></td>
+                    <td><span class="login<?=$users['id'] ?>"><?= $users['login']?></span></td>
+                    <td><span class="rightName<?=$users['id'] ?>"><?= $users['name']?></span></td>
                     <td><span class="edit" data-href="formEdit<?=$users['id'] ?>" data-id="<?=$users['id'] ?>"><i class="fas fa-pencil-alt"></i></span></td>
-                    <td><i class="fas fa-trash"></i></span></td>
+                    <td><span class="delete" data-delete='<?=$jsonUser?>'><i class="fas fa-trash"></i></span></td>
                 </tr>
                 <tr class="hidden" id="formEdit<?=$users['id'] ?>">
                     <td colspan="6"></td>

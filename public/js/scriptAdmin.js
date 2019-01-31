@@ -82,7 +82,7 @@ $(function()
         if ($('#'+elementIdToShow).hasClass('hidden')){
             $.ajax({
                 url:"admin.php?action=edit",
-                method:"GET",
+                type:"GET",
                 data:{id: $(this).data('id'), type : $('#list').data('type')},
 
                 success:function(data){
@@ -93,6 +93,64 @@ $(function()
         }
         $('#'+elementIdToShow).toggleClass('hidden');
 
+    });
+
+    $(document).on('submit', '#adminFormUsers', function(e){
+        var userId = $(this).find('.user-id').val(); //$('#idUser').val();
+        var lastname = $("#lastname" + userId).val();
+        var firstname = $("#firstname" + userId).val();
+        var login = $("#login" + userId).val();
+        var rightName = $("#rights_id" +  userId +" option:selected").html();
+
+        e.preventDefault();
+        if($("#lastname").val() === '' || $("#firstname").val() === '' || $("#login").val() === '' || $("#password").val() === '')
+        {
+            $("div.container.admin.login").find("div.alert-danger").removeClass('hidden').text('Tous les champs sont obligatoires');
+        }
+        else
+        {
+            $.ajax({
+                url: "admin.php?action=updateUser",
+                type: "POST",
+                data: $(this).closest('form').serialize(),
+
+                success : function(){
+                    $("span.lastname"+userId).html(lastname);
+                    $("span.firstname"+userId).html(firstname);
+                    $("span.login"+userId).html(login);
+                    $("span.rightName"+userId).html(rightName);
+                    $('#formEdit' + userId).toggleClass('hidden');
+
+                },
+                error : function () {
+                    alert('Une erreur s\'est produite');
+                }
+            });
+        }
+    });
+
+    $(document).on('click', 'span.delete', function(){
+        var objectToDelete = $(this).data("delete");
+
+        if (confirm("Etes-vous sûr de vouloir supprimer cet enregistrement ?"))
+        {
+            $.ajax({
+                url:"admin.php?action=delete",
+                type:"GET",
+                data:{id: objectToDelete.id, type : $('#list').data('type')},
+
+                success:function(data){
+                    //console.log(data);
+                    $('.objectId'+objectToDelete.id).fadeOut();
+                }
+            });
+        };
+    });
+
+    $(document).on('reset', '#adminFormUsers', function(e) {
+        var userId = $(this).find('.user-id').val();
+        var elementIdToClose = $('#formEdit'+userId);
+        elementIdToClose.toggleClass('hidden');
     });
 
 });

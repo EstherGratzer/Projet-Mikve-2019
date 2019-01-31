@@ -52,7 +52,41 @@ function login()
     }
 }
 
+function edit()
+{
+    switch ($_GET['type']){
+        case 'users':
+            editUser();
+            break;
 
+        case 'halahotes':
+            editHalahotes();
+            break;
+
+        case 'mikve':
+            editMikve();
+            break;
+    }
+
+}
+
+function delete()
+{
+    switch ($_GET['type']){
+        case 'users':
+            echo "delete function";
+            deleteUser();
+            break;
+
+        case 'halahotes':
+            deleteHalahotes();
+            break;
+
+        case 'mikve':
+            deleteMikve();
+            break;
+    }
+}
 
 function listUsers() // OK
 {
@@ -67,20 +101,6 @@ function listUsers() // OK
     {
         require('View/adminListUsers.php');
     }
-}
-
-function edit()
-{
-    switch ($_GET['type']){
-        case 'users':
-            editUser();
-            break;
-
-        case 'halahotes':
-            editHalahotes();
-            break;
-    }
-
 }
 
 function editUser()
@@ -119,10 +139,31 @@ function updateUser()
     }
 
     if ($updateUser === false) {
-        echo 'Impossible de modifier l\'utilisateur !';
+        return false;
     } else {
-        listUsers();
+        return true;
 
+    }
+}
+
+function deleteUser() // OK
+{
+    if (isset($_GET['id']))
+    {
+        //echo "deleteuser function";
+        $userId = $_GET['id'];
+
+        $User = new User;
+        $userToDelete = $User->deleteUser($userId);
+        //var_dump($userToDelete);
+        if ($userToDelete === false)
+        {
+            throw new Exception('Impossible de supprimer le membre !');
+        }
+        else
+        {
+            listUsers();
+        }
     }
 }
 
@@ -211,6 +252,8 @@ function listMikves() // OK
     //$nb_Items = $mikve->getCountItems('mikves');
     require('view/adminListMikves.php');
 }
+
+
 function createMikve($name, $address, $phoneNumber, $openingTimes, $prices_id, $equipements_id, $images_id) // OK
 {
     $mikve = new mikve();

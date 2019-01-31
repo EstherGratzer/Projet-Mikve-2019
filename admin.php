@@ -1,6 +1,5 @@
 <?php
 require('controller/adminCtrl.php');
-
 //test condition avec session
 //$_SESSION['user']['rights_id'] = 1;
 if (isset($_GET["action"]))

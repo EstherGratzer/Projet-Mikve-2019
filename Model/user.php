@@ -6,9 +6,9 @@ class User extends Manager
     public $type = 'users';
 
     public function get($id){
-        $userSql = $this->db->query("SELECT users.*, medias.id, medias.path, medias.alt 
+        $userSql = $this->db->query("SELECT users.*, medias.id as media_id, medias.path, medias.alt 
                                                     FROM users 
-                                                    LEFT JOIN medias ON users.media_id = medias.id WHERE users.id = '{$id}'");
+                                                    LEFT JOIN medias ON users.profils_id = medias.id WHERE users.id = '{$id}'");
         return $userSql->fetch(PDO::FETCH_ASSOC);
     }
 
@@ -24,20 +24,23 @@ class User extends Manager
     public function updateUser($user)
     {
 
-        $updateUser = $this->db->query("UPDATE users 
+        $userMediaId = ($user['profils_id']) ?: 'null';
+        $sql = "UPDATE users 
                                                   SET firstname = '{$user['firstname']}',
                                                   lastname = '{$user['lastname']}',
                                                   login = '{$user['login']}',
                                                   password = '{$user['password']}',
-                                                  profil_pic = '{$user['profil_pic']}',
+                                                  profils_id = $userMediaId,
                                                   rights_id = {$user['rights_id']} 
-                                                  WHERE users.id = {$user['idUser']}");
+                                                  WHERE users.id = {$user['idUser']}";
+
+        $updateUser = $this->db->query($sql );
         return $updateUser;
     }
 
     public function createUser($firstname, $lastname, $login, $password, $profil_picture_id)
     {
-        $reqNewUser = $this->db->prepare('INSERT INTO users(firstname, lastname, login, password, media_id, rights_id) VALUES(?, ?, ?, ?, ?, ?)');
+        $reqNewUser = $this->db->prepare('INSERT INTO users(firstname, lastname, login, password, profils_id, rights_id) VALUES(?, ?, ?, ?, ?, ?)');
         $newUser = $reqNewUser->execute(array($firstname, $lastname, $login, $password, $profil_picture_id, self::USER_RIGHT_ID));
         $newUserId = $this->db->lastInsertId();
         $user = new user();
@@ -45,14 +48,14 @@ class User extends Manager
     }
 
 
-
-    public function deleteUser($users_id)
+    public function deleteUser($userId)
     {
-        $req = $this->db->prepare("DELETE FROM users
-                            WHERE id = ?");
-        $req->execute(array($users_id));
-        return $req;
-        //La requête marche en théorie mais dans la pratique c'est impossible car le membre a des subjects et des answers donc on peut pas le supprimer sans supprimer celles-ci
+        //var_dump($userId);
+        $deleteUser = "DELETE FROM users WHERE id = {$userId}";
+        $isdeleted = $this->db->query($deleteUser);
+
+        return $isdeleted;
+
     }
 
     public function getAdmin($login, $password)
