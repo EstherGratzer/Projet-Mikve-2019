@@ -44,7 +44,6 @@ class halaha extends Manager
 
     public function delete($halahaId)
     {
-        var_dump($halahaId);
         $deletehalaha = "DELETE FROM halahotes WHERE id = {$halahaId}";
         $isdeleted = $this->db->query($deletehalaha);
 
