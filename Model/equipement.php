@@ -5,7 +5,6 @@
  * Date: 28/01/2019
  * Time: 15:52
  */
-require_once("Model/manager.php");
 
 class equipement extends manager
 {
@@ -26,7 +25,7 @@ class equipement extends manager
 
     public function addEquipement($name)
     {
-        $reqAddEquipement = $this->db->query("INSERT INTO equipements (name) VALUES ({$name})");
+        $reqAddEquipement = $this->db->query("INSERT INTO equipements (name) VALUES ('{$name}')");
         return $reqAddEquipement;
     }
 
@@ -38,7 +37,7 @@ class equipement extends manager
 
     public function updateEquipement($id, $name)
     {
-        $reqUpdateEquipement = $this->db->query("UPDATE equipements SET name= {$name} WHERE id = {$id}");
+        $reqUpdateEquipement = $this->db->query("UPDATE equipements SET name= '{$name}' WHERE id = {$id}");
         return $reqUpdateEquipement;
     }
 }

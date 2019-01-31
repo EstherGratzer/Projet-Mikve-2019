@@ -95,6 +95,21 @@ $(function()
 
     });
 
+    $(document).on('submit', 'form.editEquipement', function(e) {
+        e.preventDefault();
+        var objectId = $('input[name = "idEquip"]').val(),
+            newName = $('input[name = "newName"]').val();
+        $.ajax({
+            type: "GET",
+            url: "admin.php?action=updateEquipement",
+            data: $(this).serialize(),
+            success:function() {
+                $("span.equipement_name" + objectId).html(newName);
+                $('#formEdit' + objectId).toggleClass('hidden');
+            }
+        });
+        return false;
+    });
     $(document).on('submit', '#adminFormUsers', function(e){
         var userId = $(this).find('.user-id').val(); //$('#idUser').val();
         var lastname = $("#lastname" + userId).val();
@@ -154,7 +169,5 @@ $(function()
     });
 
 });
-
-
 
 

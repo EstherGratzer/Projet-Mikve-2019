@@ -85,6 +85,10 @@ function delete()
         case 'mikve':
             deleteMikve();
             break;
+
+        case 'equipements':
+            editEquipement();
+            break;
     }
 }
 
@@ -129,6 +133,7 @@ function editUser()
 
         }
 }
+
 
 function updateUser()
 {
@@ -216,8 +221,6 @@ function deleteHalaha() {
     $deleteHalaha= new Halaha();
     $isdeleted = $deleteHalaha-> delete($_POST["id"]);
     return $isdeleted;
-
-
 }
 
 function editHalaha() {
@@ -226,7 +229,6 @@ function editHalaha() {
     $editHalaha = new Halaha();
     $halahaToEdit = $editHalaha ->get($halahaId);
     require('View/adminEditHalaha.php');
-
 }
 
 
@@ -306,11 +308,13 @@ function deleteMikve($mikves_id) // OK
     }
 }
 
+/*fonctions concernant les équipements*/
+
 function listEquipements()
 {
     $equipements = new equipement();
     $listEquipements = $equipements->getListEquipements();
-
+    $type = $equipements->type;
     if ($listEquipements === false)
     {
         throw new Exception('Impossible d\'afficher la liste des équipements !');
@@ -321,6 +325,53 @@ function listEquipements()
     }
 }
 
+function editEquipement()
+{
+    if (isset($_GET['id'])) {
+        $equipement = new equipement();
+        $equipementToEdit = $equipement-> getOneEquipement($_GET['id']);
+        if ($equipementToEdit === false) {
+            throw new Exception('Impossible d\'afficher l\'équipement !');
+        }
+        else {
+            require('View/adminFormEquipements.php');
+        }
+    }
+    else {
+        throw new Exception('Aucun id d\'équipement recu');
+    }
+
+}
+
+function updateEquipement()
+{
+    if (isset($_GET)) {
+        $equipement = new equipement();
+        $updatedEquipement = $equipement->updateEquipement($_GET['idEquip'], $_GET['newName']);
+        if ($updatedEquipement === false) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+}
+
+function deleteEquipement($id)
+{
+    if (isset($_GET['id'])) {
+        $equipement = new equipement();
+        $deletedEquipement = $equipement->deleteEquipement($id);
+        if ($deletedEquipement === false) {
+            throw new Exception('Impossible de supprimer l\'équipement!');
+        }
+        else {
+            require('View/adminFormEquipements.php');
+        }
+    }
+    else {
+        throw new Exception('Aucun id d\'équipement recu');
+    }
+}
 
 function createEquipement($name)
 {
@@ -332,22 +383,6 @@ function createEquipement($name)
     }
 }
 
-function deleteEquipement($id)
-{
-    $equipement = new equipement();
-    $deletedEquipement = $equipement->deleteEquipement($id);
-    if ($deletedEquipement === false)
-    {
-        throw new Exception('Impossible de supprimer l\'équipement!');
-    }
-}
 
-function updateEquipement($id, $name)
-{
-    $equipement = new equipement();
-    $updatedEquipement = $equipement->updateEquipement($id, $name);
-    if ($updatedEquipement === false)
-    {
-        throw new Exception('Impossible de modifier l\'équipement!');
-    }
-}
+
+
