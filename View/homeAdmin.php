@@ -17,5 +17,16 @@
     <div>
         <h2>Bienvenue <?php echo $_SESSION['user']['firstname'] ?></h2>
     </div>
+    <!-- Trigger the modal with a button -->
+    <!--button type="button" class="btn btn-info btn-lg">Open Modal</button-->
+
+    <!-- Modal : permet d'afficher une boite de dialog avec ce qu'on veut dedans, par defaut ce div est en mode hidden-->
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
     <div class="listContent hidden"></div>
 </div>

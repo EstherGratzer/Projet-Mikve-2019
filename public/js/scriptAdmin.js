@@ -168,7 +168,29 @@ $(function()
         var userId = $(this).find('.user-id').val();
         var elementIdToClose = $('#formEdit'+userId);
         elementIdToClose.toggleClass('hidden');
+
+        $("#myModal").modal('hide');
     });
+
+    $(document).on('click', 'div.newElement', function(){
+//affichage en mode dialog du formulaire de creation, creer un div modal dans le template pour affichage du dialog via la fonction bootstrap modal
+        $("#myModal").modal('show');
+
+            $.ajax({
+                url: "admin.php?action=create",
+                type: "GET",
+                data: {type : $('#list').data('type')},
+
+                success: function (data) {
+                    $(".modal-content").html(data);
+                }
+            });
+    });
+
+    /*$(document).on('click', '.btn-lg', function(){
+        $("#myModal").modal('show');
+        $(".modal-content").html("toto");
+    });*/
 
 });
 

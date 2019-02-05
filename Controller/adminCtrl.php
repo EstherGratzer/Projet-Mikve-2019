@@ -51,6 +51,26 @@ function login()
         include('view/admin.php');
     }
 }
+function create()
+{
+    switch ($_GET['type']){
+        case 'users':
+            createUser();
+            break;
+
+        case 'halahotes':
+            createHalahotes();
+            break;
+
+        case 'mikve':
+            createMikve();
+            break;
+
+        case 'equipement':
+            createEquipement();
+            break;
+    }
+}
 
 function edit()
 {
@@ -133,6 +153,14 @@ function editUser()
             echo'Impossible d\'afficher l\'utilisateur !';
         }
         else {
+            $id = $userToEdit['id']?: NULL;
+            $profils_id = $userToEdit['profils_id']?: NULL;
+            $lastname = $userToEdit['lastname']?: NULL;
+            $firstname = $userToEdit['firstname']?: NULL;
+            $login = $userToEdit['login']?: NULL;
+            $password = $userToEdit['password']?: NULL;
+            $rights_id = $userToEdit['rights_id']?: NULL;
+
             require('View/adminFormUsers.php');
 
         }
@@ -176,18 +204,20 @@ function deleteUser() // OK
     }
 }
 
-function createUser($firstname, $lastname, $login, $password) // OK
+function createUser() // OK
 {
-    $user = new user();
-    $affectedLines = $user->createUser($firstname, $lastname, $login, $password);
-    if ($affectedLines === false)
-    {
-        throw new Exception('Impossible d\'ajouter le membre !');
-    }
-    else
-    {
-        //header('Location: index.php?action=showSubject&id='.$subjects_id);
-    }
+    $rights = new  Right();
+    $rightList = $rights->find();
+    $id = isset($userToEdit['id'])?: NULL;
+    $profils_id = isset($userToEdit['profils_id'])?: NULL;
+    $lastname = isset($userToEdit['lastname'])?: NULL;
+    $firstname = isset($userToEdit['firstname'])?: NULL;
+    $login = isset($userToEdit['login'])?: NULL;
+    $password = isset($userToEdit['password'])?: NULL;
+    $rights_id = isset($userToEdit['rights_id'])?: NULL;
+
+    require('View/adminFormUsers.php');
+
 }
 
 function updateUserRights($members_id, $rights_id) // OK
