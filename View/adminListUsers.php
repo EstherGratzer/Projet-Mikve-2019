@@ -1,6 +1,6 @@
 <div id="list" class="listUsers" data-type = "<?php echo $type?>">
     <section class="col-lg-12 table-responsive">
-        <div class="newUser" align="right"><i class="fas fa-edit"></i>Créer un Nouvel Utilisateur</div>
+        <div class="newElement" data-href="newElementForm" align="right"><i class="fas fa-edit"></i>Créer un Nouvel Utilisateur</div>
         <table class="table table-striped table-condensed">
             <thead>
             <tr>

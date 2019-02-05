@@ -1,6 +1,5 @@
 $(function()
 {
-    //alert("je suis pas fou");
     $("#connection").on("click", function(e)
     {
         e.preventDefault();
@@ -40,42 +39,8 @@ $(function()
             }
 
         });
-    });
-
-     $(document).on('click', 'span.delete-halaha', function(){
-         var halahaToDelete = $(this).data('halaha');
-         if(confirm("Etes vous sur de supprimer?"))
-         {
-             $.ajax({
-                 url:"admin.php?action=deleteHalaha",
-                 method:"POST",
-                 data:{id: halahaToDelete.id},
-
-                 success:function(data){
-                     $('#alert_message').html('<div class="alert alert-success">La Halaha "' +  halahaToDelete.titre +'" a ete supprimée!</div>');
-                     $('.halaha-'+halahaToDelete.id).fadeOut();
-                 }
-             });
-         }
-     });
-
-    $("form.newEdit").submit(function(e) {
-        e.preventDefault();
-        var formData = new FormData($(this)[0]);
-        $.ajax({
-            type: "POST",
-            url: "admin.php?action=updateHalaha",
-            data: formData,
-            cache: false,
-            contentType: false,
-            processData: false,
-            success:function( msg ) {
-                window.location('admin.php?action=listHalahotes')
-            }
-        });
         return false;
     });
-
 
     $(document).on('click', 'span.edit', function(){
         var elementIdToShow = $(this).data("href");
@@ -84,9 +49,7 @@ $(function()
                 url:"admin.php?action=edit",
                 type:"GET",
                 data:{id: $(this).data('id'), type : $('#list').data('type')},
-
                 success:function(data){
-                    console.log(data);
                     $('#' + elementIdToShow).find('td').html(data);
                 }
             });
@@ -95,22 +58,44 @@ $(function()
 
     });
 
-    $(document).on('submit', 'form.editEquipement', function(e) {
+    $(document).on('click', 'span.delete', function(){
+        var objectToDelete = $(this).data("delete");
+        if (confirm("Etes-vous sûr de vouloir supprimer cet enregistrement ?"))
+        {
+            $.ajax({
+                url:"admin.php?action=delete",
+                type:"GET",
+                data:{id: objectToDelete.id, type : $('#list').data('type')},
+                success:function(data){
+                    $('#alert_message').html('<div class="alert alert-success">La suppression a été fait avec succés</div>');
+                    $('.objectId'+objectToDelete.id).fadeOut();
+                }
+            });
+        }
+    });
+
+
+    $(document).on('submit', 'form.form-equipement', function(e) {
         e.preventDefault();
         var objectId =  $(this).find('.equipement-id').val(),
             newName = $('#newName' + objectId).val();
         $.ajax({
-            type: "GET",
-            url: "admin.php?action=updateEquipement",
+            type: "POST",
+            url: "admin.php?action=addEquipement",
             data: $(this).serialize(),
-            success:function() {
-                $("span.equipement_name" + objectId).html(newName);
-                $('#formEdit' + objectId).toggleClass('hidden');
+            success:function(list) {
+                if (objectId != ''){
+                    $("span.equipement_name" + objectId).html(newName);
+                    $('#formEdit' + objectId).toggleClass('hidden');
+                }
+                else {
+                    $("#myModal").modal('hide');
+                    $(".listContent").removeClass('hidden').html(list);
+                }
             }
         });
         return false;
     });
-
 
     $(document).on('submit', '#adminFormUsers', function(e){
         var userId = $(this).find('.user-id').val(); //$('#idUser').val();
@@ -146,28 +131,34 @@ $(function()
         }
     });
 
-    $(document).on('click', 'span.delete', function(){
-        var objectToDelete = $(this).data("delete");
-
-        if (confirm("Etes-vous sûr de vouloir supprimer cet enregistrement ?"))
-        {
-            $.ajax({
-                url:"admin.php?action=delete",
-                type:"GET",
-                data:{id: objectToDelete.id, type : $('#list').data('type')},
-
-                success:function(data){
-                    //console.log(data);
-                    $('.objectId'+objectToDelete.id).fadeOut();
-                }
-            });
-        };
-    });
-
     $(document).on('reset', '#adminFormUsers', function(e) {
         var userId = $(this).find('.user-id').val();
         var elementIdToClose = $('#formEdit'+userId);
         elementIdToClose.toggleClass('hidden');
+
+        $("#myModal").modal('hide');
+    });
+
+    $(document).on('click', 'div.newElement', function(){
+        //affichage en mode dialog du formulaire de creation, creer un div modal dans le template pour affichage du dialog via la fonction bootstrap modal
+            $.ajax({
+                url: "admin.php?action=create",
+                type: "GET",
+                data: {type : $('#list').data('type')},
+
+                success: function (data) {
+                    $(".modal-content").html(data);
+                    $("#myModal").modal('show');
+                }
+            });
+    });
+
+    $(document).on('reset', 'form.form-equipement', function(e) {
+        var equipementId = $(this).find('.equipement-id').val();
+        var elementIdToClose = $('#formEdit'+equipementId);
+        elementIdToClose.toggleClass('hidden');
+
+        $("#myModal").modal('hide');
     });
 
 });
