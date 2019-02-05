@@ -38,3 +38,9 @@
 .table-striped>tbody>tr:nth-child(odd)>th {
     background-color: #e3f2fd; /*Choose your own color here*/
 }
+
+#form-equipement{
+    max-width: 400px;
+    padding: 15px;
+    margin: 0 auto;
+}

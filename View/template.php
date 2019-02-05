@@ -77,7 +77,7 @@
                         <?php }
                         else { ?>
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <?php if (isset($_SESSION['user']['media_id'])) { ?>
+                            <?php if (isset($_SESSION['user']['profils_id'])) { ?>
                             <img class="inset" src="public/images/users/<?php echo $_SESSION['user']['path']?>" alt="<?php echo $_SESSION['user']['alt']?>">
                             <?php }
                             else { ?>

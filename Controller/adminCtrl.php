@@ -7,6 +7,7 @@ require_once('Model/equipement.php');
 require_once('Model/mikve.php');
 require_once('Model/halaha.php');
 require_once('Model/rights.php');
+
 function index()
 {
     //require ("View/adminFormMikves.php");
@@ -21,6 +22,7 @@ function index()
     }
     require("View/admin.php");
 }
+
 function login()
 {
     if(!empty ($_POST['Login']) && !empty ($_POST['Password']))
@@ -51,6 +53,8 @@ function login()
         include('view/admin.php');
     }
 }
+
+
 function create()
 {
     switch ($_GET['type']){
@@ -66,7 +70,7 @@ function create()
             createMikve();
             break;
 
-        case 'equipement':
+        case 'equipements':
             createEquipement();
             break;
     }
@@ -208,17 +212,70 @@ function createUser() // OK
 {
     $rights = new  Right();
     $rightList = $rights->find();
-    $id = isset($userToEdit['id'])?: NULL;
-    $profils_id = isset($userToEdit['profils_id'])?: NULL;
-    $lastname = isset($userToEdit['lastname'])?: NULL;
-    $firstname = isset($userToEdit['firstname'])?: NULL;
-    $login = isset($userToEdit['login'])?: NULL;
-    $password = isset($userToEdit['password'])?: NULL;
-    $rights_id = isset($userToEdit['rights_id'])?: NULL;
+
+    $id = NULL;
+    $profils_id = NULL;
+    $lastname = NULL;
+    $firstname = NULL;
+    $login = NULL;
+    $password = NULL;
+    $rights_id = null;
+
 
     require('View/adminFormUsers.php');
 
 }
+
+function addUser()
+{
+    if (isset($_POST['idUser']) && $_POST['idUser'] != '' ) {
+        updateUser();
+    }
+    else {
+        saveUser();
+    }
+}
+
+function saveUser()
+{
+    if(isset($_POST)){
+        $profils_id = null;
+        $lastname = $_POST['lastname'];
+        $firstname = $_POST['firstname'];
+        $login = $_POST['login'];
+        $password = $_POST['password'];
+        $rights_id = $_POST['rights_id'];
+
+        $loginExists = User::checkExistingLogin($login);
+        if(!$loginExists){
+            if(isset($_FILES)){
+                $alt = $firstname.' '.$lastname;
+                $uploadedPicture = User::addProfilePicture($_FILES, $alt);
+
+                if($uploadedPicture) {
+                    $profils_id = $uploadedPicture;
+                } else {
+                    echo "l'image n'a pu etre uploadee.";
+                }
+            }
+
+
+            $user = new User();
+            $newUser= $user->createUser($firstname, $lastname, $login, $password, $profils_id, $rights_id);
+
+            if ($newUser === false) {
+                return false;
+            } else {
+                listUsers();
+            }
+        } else {
+            return false;
+        }
+    }
+
+}
+
+
 
 function updateUserRights($members_id, $rights_id) // OK
 {
@@ -368,6 +425,9 @@ function editEquipement()
             throw new Exception('Impossible d\'afficher l\'équipement !');
         }
         else {
+            $title = "Mise a jour équipement";
+            $id = $equipementToEdit['id'];
+            $name = $equipementToEdit['name'];
             require('View/adminFormEquipements.php');
         }
     }
@@ -379,9 +439,9 @@ function editEquipement()
 
 function updateEquipement()
 {
-    if (isset($_GET)) {
+    if (isset($_POST)) {
         $equipement = new equipement();
-        $updatedEquipement = $equipement->updateEquipement($_GET['idEquip'], $_GET['newName']);
+        $updatedEquipement = $equipement->updateEquipement($_POST['idEquip'], $_POST['newName']);
         if ($updatedEquipement === false) {
             return false;
         } else {
@@ -390,33 +450,37 @@ function updateEquipement()
     }
 }
 
-function deleteEquipement($id)
+function deleteEquipement()
 {
     if (isset($_GET['id'])) {
+        $idEquip = $_GET['id'];
         $equipement = new equipement();
-        $deletedEquipement = $equipement->deleteEquipement($id);
+        $deletedEquipement = $equipement->deleteEquipement($idEquip);
         if ($deletedEquipement === false) {
             throw new Exception('Impossible de supprimer l\'équipement!');
         }
-        else {
-            require('View/adminFormEquipements.php');
-        }
+
     }
     else {
         throw new Exception('Aucun id d\'équipement recu');
     }
 }
 
-function createEquipement($name)
+function createEquipement()
 {
-    $equipement = new equipement();
-    $newEquipement = $equipement->addEquipement($name);
-    if ($newEquipement === false)
-    {
-        throw new Exception('Impossible d\'ajouter l\'équipement!');
-    }
+    $title = "Nouvel équipement";
+    $id = '';
+    $name = '';
+    require('View/adminFormEquipements.php');
 }
 
+function saveEquipement () {
 
-
-
+    $equipement = new equipement();
+    $createdEquipement = $equipement->saveEquipement($_POST['newName']);
+    if ($createdEquipement === false) {
+        return false;
+    } else {
+        listEquipements();
+    }
+}

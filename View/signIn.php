@@ -63,7 +63,7 @@ ob_start();
                     <div class="input-group-prepend">
                         <span class="input-group-text"> <i class="fas fa-user-circle"></i> </span>
                     </div>
-                    <input class="form-control" name="profil_pic" type="file">
+                    <input class="form-control" name="profils_id" type="file">
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-block"> Create Account  </button>

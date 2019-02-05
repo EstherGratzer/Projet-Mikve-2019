@@ -23,15 +23,15 @@ class equipement extends manager
         return $infoEquipement;
     }
 
-    public function addEquipement($name)
+    public function saveEquipement($name)
     {
         $reqAddEquipement = $this->db->query("INSERT INTO equipements (name) VALUES ('{$name}')");
         return $reqAddEquipement;
     }
 
-    public function deleteEquipement($id)
+    public function deleteEquipement($idEquip)
     {
-        $reqDeleteEquipement = $this->db->query("DELETE FROM mikves WHERE id = {$id}");
+        $reqDeleteEquipement = $this->db->query("DELETE FROM equipements WHERE id = {$idEquip}");
         return $reqDeleteEquipement;
     }
 

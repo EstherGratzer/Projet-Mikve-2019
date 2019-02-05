@@ -1,6 +1,5 @@
 $(function()
 {
-    //alert("je suis pas fou");
     $("#connection").on("click", function(e)
     {
         e.preventDefault();
@@ -40,42 +39,8 @@ $(function()
             }
 
         });
-    });
-
-     $(document).on('click', 'span.delete-halaha', function(){
-         var halahaToDelete = $(this).data('halaha');
-         if(confirm("Etes vous sur de supprimer?"))
-         {
-             $.ajax({
-                 url:"admin.php?action=deleteHalaha",
-                 method:"POST",
-                 data:{id: halahaToDelete.id},
-
-                 success:function(data){
-                     $('#alert_message').html('<div class="alert alert-success">La Halaha "' +  halahaToDelete.titre +'" a ete supprimée!</div>');
-                     $('.halaha-'+halahaToDelete.id).fadeOut();
-                 }
-             });
-         }
-     });
-
-    $("form.newEdit").submit(function(e) {
-        e.preventDefault();
-        var formData = new FormData($(this)[0]);
-        $.ajax({
-            type: "POST",
-            url: "admin.php?action=updateHalaha",
-            data: formData,
-            cache: false,
-            contentType: false,
-            processData: false,
-            success:function( msg ) {
-                window.location('admin.php?action=listHalahotes')
-            }
-        });
         return false;
     });
-
 
     $(document).on('click', 'span.edit', function(){
         var elementIdToShow = $(this).data("href");
@@ -84,9 +49,7 @@ $(function()
                 url:"admin.php?action=edit",
                 type:"GET",
                 data:{id: $(this).data('id'), type : $('#list').data('type')},
-
                 success:function(data){
-                    console.log(data);
                     $('#' + elementIdToShow).find('td').html(data);
                 }
             });
@@ -95,22 +58,44 @@ $(function()
 
     });
 
-    $(document).on('submit', 'form.editEquipement', function(e) {
+    $(document).on('click', 'span.delete', function(){
+        var objectToDelete = $(this).data("delete");
+        if (confirm("Etes-vous sûr de vouloir supprimer cet enregistrement ?"))
+        {
+            $.ajax({
+                url:"admin.php?action=delete",
+                type:"GET",
+                data:{id: objectToDelete.id, type : $('#list').data('type')},
+                success:function(data){
+                    $('#alert_message').html('<div class="alert alert-success">La suppression a été fait avec succés</div>');
+                    $('.objectId'+objectToDelete.id).fadeOut();
+                }
+            });
+        }
+    });
+
+
+    $(document).on('submit', 'form.form-equipement', function(e) {
         e.preventDefault();
         var objectId =  $(this).find('.equipement-id').val(),
             newName = $('#newName' + objectId).val();
         $.ajax({
-            type: "GET",
-            url: "admin.php?action=updateEquipement",
+            type: "POST",
+            url: "admin.php?action=addEquipement",
             data: $(this).serialize(),
-            success:function() {
-                $("span.equipement_name" + objectId).html(newName);
-                $('#formEdit' + objectId).toggleClass('hidden');
+            success:function(list) {
+                if (objectId != ''){
+                    $("span.equipement_name" + objectId).html(newName);
+                    $('#formEdit' + objectId).toggleClass('hidden');
+                }
+                else {
+                    $("#myModal").modal('hide');
+                    $(".listContent").removeClass('hidden').html(list);
+                }
             }
         });
         return false;
     });
-
 
     $(document).on('submit', '#adminFormUsers', function(e){
         var userId = $(this).find('.user-id').val(); //$('#idUser').val();
@@ -119,6 +104,7 @@ $(function()
         var login = $("#login" + userId).val();
         var password = $("#password" + userId).val();
         var rightName = $("#rights_id" +  userId +" option:selected").html();
+        var formData = new FormData($(this)[0]);
 
         e.preventDefault();
         if(lastname === '' || firstname === '' || login === '' || password === '')
@@ -128,41 +114,32 @@ $(function()
         else
         {
             $.ajax({
-                url: "admin.php?action=updateUser",
+                url: "admin.php?action=addUser",
                 type: "POST",
-                data: $(this).closest('form').serialize(),
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
 
-                success : function(){
-                    $("span.lastname"+userId).html(lastname);
-                    $("span.firstname"+userId).html(firstname);
-                    $("span.login"+userId).html(login);
-                    $("span.rightName"+userId).html(rightName);
-                    $('#formEdit' + userId).toggleClass('hidden');
-
-                },
-                error : function () {
-                    alert('Une erreur s\'est produite');
+                success:function(list) {
+                    if (userId != ''){
+                        $("span.lastname"+userId).html(lastname);
+                        $("span.firstname"+userId).html(firstname);
+                        $("span.login"+userId).html(login);
+                        $("span.rightName"+userId).html(rightName);
+                        $('#formEdit' + userId).toggleClass('hidden');
+                    }
+                    else {
+                        if(list) {
+                            $("#myModal").modal('hide');
+                            $(".listContent").removeClass('hidden').html(list);
+                        } else {
+                            alert('Ce login existe deja');
+                        }
+                    }
                 }
             });
         }
-    });
-
-    $(document).on('click', 'span.delete', function(){
-        var objectToDelete = $(this).data("delete");
-
-        if (confirm("Etes-vous sûr de vouloir supprimer cet enregistrement ?"))
-        {
-            $.ajax({
-                url:"admin.php?action=delete",
-                type:"GET",
-                data:{id: objectToDelete.id, type : $('#list').data('type')},
-
-                success:function(data){
-                    //console.log(data);
-                    $('.objectId'+objectToDelete.id).fadeOut();
-                }
-            });
-        };
     });
 
     $(document).on('reset', '#adminFormUsers', function(e) {
@@ -174,9 +151,7 @@ $(function()
     });
 
     $(document).on('click', 'div.newElement', function(){
-//affichage en mode dialog du formulaire de creation, creer un div modal dans le template pour affichage du dialog via la fonction bootstrap modal
-        $("#myModal").modal('show');
-
+        //affichage en mode dialog du formulaire de creation, creer un div modal dans le template pour affichage du dialog via la fonction bootstrap modal
             $.ajax({
                 url: "admin.php?action=create",
                 type: "GET",
@@ -184,18 +159,50 @@ $(function()
 
                 success: function (data) {
                     $(".modal-content").html(data);
+                    $("#myModal").modal('show');
                 }
             });
     });
 
+    $(document).on('reset', 'form.form-equipement', function(e) {
+        var equipementId = $(this).find('.equipement-id').val();
+        var elementIdToClose = $('#formEdit'+equipementId);
+        elementIdToClose.toggleClass('hidden');
+
+        $("#myModal").modal('hide');
+    });
 
     $(document).on('focus', '#adminFormUsers input', function(){$('div.alert-danger').addClass('hidden')})
 
-    /*$(document).on('click', '.btn-lg', function(){
-        $("#myModal").modal('show');
-        $(".modal-content").html("toto");
-    });*/
+    $(document).on('submit', '.formHalaha', function (e) {
+        e.preventDefault();
 
+        var objectId = $(this).find('.halaha-id').val(),
+            titreHalaha = $('#titre' + objectId).val();
+        var formData = new FormData($(this)[0]);
+
+        $.ajax({
+            type: "POST",
+            url: "admin.php?action=addHalaha",
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (list) {
+                if (objectId != ''){
+                    $('#alert_message').html('<div class="alert alert-success">La Halaha a été mise a jour!</div>');
+                    $("span.titre-halaha" + objectId).html(titreHalaha);
+                    $('#formEdit' + objectId).toggleClass('hidden');
+                }
+                else {
+                    $("#myModal").modal('hide');
+                    $(".listContent").removeClass('hidden').html(list);
+                }
+
+            }
+        });
+        return false;
+    });
 });
 
 
