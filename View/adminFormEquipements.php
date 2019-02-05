@@ -7,16 +7,17 @@
  */
 ?>
 
-<h3 align="center">Mise à jour équipement</h3>
+<h3 align="center" ><?=$title?></h3>
+<div class="row">
     <div class="col-md-12">
-        <form class="editEquipement" name="adminFormEquipement" method="post">
+        <form id="form-equipement" class="form-equipement" name="adminFormEquipement" method="post">
             <div class="col-sm-12">
-                <input type="hidden" class="form-control equipement-id" id="idEquip<?=$equipementToEdit['id']?>" name="idEquip" value="<?=$equipementToEdit['id']?>" />
+                <input type="hidden" class="form-control equipement-id" id="idEquip<?=$id?>" name="idEquip" value="<?=$id?>" />
             </div>
             <div class="form-group row">
                 <label for="name" class="col-sm-4 col-form-label">Nom </label>
                 <div class="col-sm-8">
-                    <input type="text" class="form-control" id="newName<?=$equipementToEdit['id']?>" name="newName" value="<?=$equipementToEdit['name']?>" />
+                    <input type="text" class="form-control" id="newName<?=$id?>" name="newName" value="<?=$name ?>" />
                 </div>
             </div>
             <br><br><br>
@@ -26,3 +27,4 @@
             </div>
         </form>
     </div>
+</div>

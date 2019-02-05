@@ -29,8 +29,8 @@ class signInCtrl {
         else {
             $user = new user();
             $checkUser = $user -> connectUser($_POST['login'], $_POST['password']);
-            print_r($checkUser);
-            if(count($checkUser ) > 0){
+
+            if($checkUser){
                 $currentUser = $user->get($checkUser['id']);
                 $_SESSION['user'] = $currentUser;
                 header("location:index.php");

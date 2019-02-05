@@ -66,7 +66,7 @@ function create()
             createMikve();
             break;
 
-        case 'equipement':
+        case 'equipements':
             createEquipement();
             break;
     }
@@ -368,6 +368,9 @@ function editEquipement()
             throw new Exception('Impossible d\'afficher l\'équipement !');
         }
         else {
+            $title = "Mise a jour équipement";
+            $id = $equipementToEdit['id'];
+            $name = $equipementToEdit['name'];
             require('View/adminFormEquipements.php');
         }
     }
@@ -379,9 +382,9 @@ function editEquipement()
 
 function updateEquipement()
 {
-    if (isset($_GET)) {
+    if (isset($_POST)) {
         $equipement = new equipement();
-        $updatedEquipement = $equipement->updateEquipement($_GET['idEquip'], $_GET['newName']);
+        $updatedEquipement = $equipement->updateEquipement($_POST['idEquip'], $_POST['newName']);
         if ($updatedEquipement === false) {
             return false;
         } else {
@@ -390,33 +393,47 @@ function updateEquipement()
     }
 }
 
-function deleteEquipement($id)
+function deleteEquipement()
 {
     if (isset($_GET['id'])) {
+        $idEquip = $_GET['id'];
         $equipement = new equipement();
-        $deletedEquipement = $equipement->deleteEquipement($id);
+        $deletedEquipement = $equipement->deleteEquipement($idEquip);
         if ($deletedEquipement === false) {
             throw new Exception('Impossible de supprimer l\'équipement!');
         }
-        else {
-            require('View/adminFormEquipements.php');
-        }
+
     }
     else {
         throw new Exception('Aucun id d\'équipement recu');
     }
 }
 
-function createEquipement($name)
+function createEquipement()
 {
-    $equipement = new equipement();
-    $newEquipement = $equipement->addEquipement($name);
-    if ($newEquipement === false)
-    {
-        throw new Exception('Impossible d\'ajouter l\'équipement!');
-    }
+    $title = "Nouvel équipement";
+    $id = '';
+    $name = '';
+    require('View/adminFormEquipements.php');
 }
 
+function saveEquipement () {
 
+    $equipement = new equipement();
+    $createdEquipement = $equipement->saveEquipement($_POST['newName']);
+    if ($createdEquipement === false) {
+        return false;
+    } else {
+        listEquipements();
+    }
 
-
+}
+function addEquipement()
+{
+    if (isset($_POST['idEquip']) && $_POST['idEquip'] != '' ) {
+        updateEquipement();
+    }
+    else {
+        saveEquipement();
+    }
+}
