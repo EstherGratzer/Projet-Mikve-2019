@@ -45,3 +45,8 @@
     position: relative;
     z-index: 998;
 }
+
+img.logo-img {
+    height: 60px;
+    border-radius: 40px;
+}

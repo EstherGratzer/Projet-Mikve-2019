@@ -68,6 +68,9 @@ ob_start();
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary btn-block"> Create Account  </button>
                 </div>
+                <div class="form-group">
+                    <p class="text-center">Deja inscrit ? <a href="index.php">Retour à l'accueil</a> </p>
+                </div>
             </form>
         </article>
     </div>

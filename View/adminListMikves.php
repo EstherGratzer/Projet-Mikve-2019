@@ -18,7 +18,7 @@
             { ?>
                 <tr>
                     <td><?=$mikves['name'] ?></td>
-                    <td><?=$mikves['address']?></td>
+                    <td><?=$mikves['street']?></td>
                     <td><?=$mikves['phoneNumber']?></td>
                     <td><?=$mikves['openningTimes']?></td>
                     <td><a href="adminFormMikves.php"><i class="fas fa-pencil-alt"></i></a></td>

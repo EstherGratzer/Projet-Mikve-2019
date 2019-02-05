@@ -10,7 +10,7 @@
 <h3 align="center" ><?=$title?></h3>
 <div class="row">
     <div class="col-md-12">
-        <form id="form-equipement" class="form-equipement" name="adminFormEquipement" method="post">
+        <form id="form-equipement" class="form-equipement" name="adminFormEquipement" method="POST">
             <div class="col-sm-12">
                 <input type="hidden" class="form-control equipement-id" id="idEquip<?=$id?>" name="idEquip" value="<?=$id?>" />
             </div>

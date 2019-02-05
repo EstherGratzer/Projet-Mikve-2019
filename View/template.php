@@ -13,96 +13,26 @@
         <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
         <link rel="stylesheet" href="public/css/template.css">
         <script src="public/js/script.js"></script>
+        <script src="public/js/signIn.js"></script>
         <?php echo $style ?>
         <title> <?php echo $title ?> </title>
     </head>
     <body>
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="#">Mikve</a>
+            <a class="navbar-brand" href="index.php"><img class="logo-img" src="public/images/logo.jpg" alt="logo mikve"></a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarText">
                 <ul class="navbar-nav mr-auto">
-                    <li class="nav-item active">
-                        <a class="nav-link" href="index.php">Home <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Liste des mikvés</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Halkha du jour</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Boutique</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link" href="mikve.php">Liste des mikvés</a></li>
+                    <li class="nav-item"><a class="nav-link" href="halaha.php">Halkha du jour</a></li>
+                    <li class="nav-item"><a class="nav-link" href="View/shop.php">Boutique</a></li>
+                    <li class="nav-item"><a class="nav-link" href="View/contact.php">Contact</a></li>
                 </ul>
-                <ul class="nav navbar-nav navbar-right">
-                    <li class="dropdown">
-                        <?php if (!isset($_SESSION['user'])) { ?>
-                        <a href="signIn.php">Inscription</a>
-                        <?php } ?>
-
-                        <?php if (!isset($_SESSION['user'])) { ?>
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Connexion</a>
-                        <form action="signIn.php?action=doLogin" method="post" name="form-login">
-                        <ul class="dropdown-menu">
-                            <li>
-                                <div class="navbar-login">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <p class="text-left"><strong>Veuillez renseigner votre login et password</strong></p>
-                                            <div class="form-group">
-                                                <input name="login" class="form-control" placeholder="Login" type="email">
-                                                <input name="password" class="form-control" placeholder="Password" type="password">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <div class="navbar-login navbar-login-session">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <a href="#" class="btn btn-danger btn-block btn-login">Connexion</a>
-                                            <p class="text-center">Pas encore inscrit <a href="signIn.php">Creer un compte</a> </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        </form>
-                        <?php }
-                        else { ?>
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <?php if (isset($_SESSION['user']['media_id'])) { ?>
-                            <img class="inset" src="public/images/users/<?php echo $_SESSION['user']['path']?>" alt="<?php echo $_SESSION['user']['alt']?>">
-                            <?php }
-                            else { ?>
-                            <img class="inset" src="public/images/users/defaultAvatar.jpg" alt="<?php echo $_SESSION['user']['lastname']?>">
-                            <?php } ?>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li>
-                                <div class="navbar-login">
-                                    <div class="row">
-                                        <div class="col-lg-12">
-                                            <p><strong><?php echo $_SESSION['user']['firstname'].' '.$_SESSION['user']['lastname']?></strong></p>
-                                            <?php if ($_SESSION['user']['rights_id'] == 1) {?>
-                                            <p><a href="admin.php" target="_blank">Administration</a></p>
-                                            <?php }?>
-                                            <p><a href="#">Mon compte</a></p>
-                                            <p><a href="signIn.php?action=logOut">Deconnexion</a></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <?php } ?>
-
-                    </li>
+                <ul class="nav navbar-nav navbar-right nav-connection">
+                    <?php require ("View/navigationConnection.php"); ?>
                 </ul>
             </div>
         </nav>

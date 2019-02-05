@@ -33,8 +33,9 @@ class signInCtrl {
             if($checkUser){
                 $currentUser = $user->get($checkUser['id']);
                 $_SESSION['user'] = $currentUser;
-                header("location:index.php");
-                exit();
+                require ("View/navigationConnection.php");
+            } else {
+                return false;
             }
         }
     }

@@ -3,6 +3,11 @@
 require_once('Model/manager.php');
 require_once('Model/mikve.php');
 require_once('Model/comment.php');
+
+function index() {
+    listMikves();
+}
+
 function listMikves() // OK
 {
     $mikve = new mikve();
