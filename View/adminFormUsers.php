@@ -1,5 +1,6 @@
 
     <h3 align="center">Formulaire Utilisateur</h3>
+    <div class="alert alert-danger hidden" role="alert"></div>
     <div class="row">
         <div class="col-md-12">
             <form id="adminFormUsers" action="admin.php?action=updateUser" method="post">

@@ -117,12 +117,13 @@ $(function()
         var lastname = $("#lastname" + userId).val();
         var firstname = $("#firstname" + userId).val();
         var login = $("#login" + userId).val();
+        var password = $("#password" + userId).val();
         var rightName = $("#rights_id" +  userId +" option:selected").html();
 
         e.preventDefault();
-        if($("#lastname").val() === '' || $("#firstname").val() === '' || $("#login").val() === '' || $("#password").val() === '')
+        if(lastname === '' || firstname === '' || login === '' || password === '')
         {
-            $("div.container.admin.login").find("div.alert-danger").removeClass('hidden').text('Tous les champs sont obligatoires');
+            $("div.alert-danger").removeClass('hidden').text('Tous les champs sont obligatoires');
         }
         else
         {
@@ -186,6 +187,9 @@ $(function()
                 }
             });
     });
+
+
+    $(document).on('focus', '#adminFormUsers input', function(){$('div.alert-danger').addClass('hidden')})
 
     /*$(document).on('click', '.btn-lg', function(){
         $("#myModal").modal('show');
