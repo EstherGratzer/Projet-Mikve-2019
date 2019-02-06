@@ -102,30 +102,41 @@ $(function()
         var lastname = $("#lastname" + userId).val();
         var firstname = $("#firstname" + userId).val();
         var login = $("#login" + userId).val();
+        var password = $("#password" + userId).val();
         var rightName = $("#rights_id" +  userId +" option:selected").html();
+        var formData = new FormData($(this)[0]);
 
         e.preventDefault();
-        if($("#lastname").val() === '' || $("#firstname").val() === '' || $("#login").val() === '' || $("#password").val() === '')
+        if(lastname === '' || firstname === '' || login === '' || password === '')
         {
-            $("div.container.admin.login").find("div.alert-danger").removeClass('hidden').text('Tous les champs sont obligatoires');
+            $("div.alert-danger").removeClass('hidden').text('Tous les champs sont obligatoires');
         }
         else
         {
             $.ajax({
-                url: "admin.php?action=updateUser",
+                url: "admin.php?action=addUser",
                 type: "POST",
-                data: $(this).closest('form').serialize(),
+                data: formData,
+                cache: false,
+                contentType: false,
+                processData: false,
 
-                success : function(){
-                    $("span.lastname"+userId).html(lastname);
-                    $("span.firstname"+userId).html(firstname);
-                    $("span.login"+userId).html(login);
-                    $("span.rightName"+userId).html(rightName);
-                    $('#formEdit' + userId).toggleClass('hidden');
-
-                },
-                error : function () {
-                    alert('Une erreur s\'est produite');
+                success:function(list) {
+                    if (userId != ''){
+                        $("span.lastname"+userId).html(lastname);
+                        $("span.firstname"+userId).html(firstname);
+                        $("span.login"+userId).html(login);
+                        $("span.rightName"+userId).html(rightName);
+                        $('#formEdit' + userId).toggleClass('hidden');
+                    }
+                    else {
+                        if(list) {
+                            $("#myModal").modal('hide');
+                            $(".listContent").removeClass('hidden').html(list);
+                        } else {
+                            alert('Ce login existe deja');
+                        }
+                    }
                 }
             });
         }
@@ -161,6 +172,37 @@ $(function()
         $("#myModal").modal('hide');
     });
 
+    $(document).on('focus', '#adminFormUsers input', function(){$('div.alert-danger').addClass('hidden')})
+
+    $(document).on('submit', '.formHalaha', function (e) {
+        e.preventDefault();
+
+        var objectId = $(this).find('.halaha-id').val(),
+            titreHalaha = $('#titre' + objectId).val();
+        var formData = new FormData($(this)[0]);
+
+        $.ajax({
+            type: "POST",
+            url: "admin.php?action=addHalaha",
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (list) {
+                if (objectId != ''){
+                    $('#alert_message').html('<div class="alert alert-success">La Halaha a été mise a jour!</div>');
+                    $("span.titre-halaha" + objectId).html(titreHalaha);
+                    $('#formEdit' + objectId).toggleClass('hidden');
+                }
+                else {
+                    $("#myModal").modal('hide');
+                    $(".listContent").removeClass('hidden').html(list);
+                }
+
+            }
+        });
+        return false;
+    });
 });
 
 

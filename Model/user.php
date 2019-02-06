@@ -1,8 +1,10 @@
 <?php
+require_once('Model/medias.php');
+
 class User extends Manager
 {
     const ADMIN_RIGHT_ID = 1;
-    const USER_RIGHT_ID = 2;
+    const USER_RIGHT_ID = 3;
     public $type = 'users';
 
     public function get($id){
@@ -26,22 +28,22 @@ class User extends Manager
 
         $userMediaId = ($user['profils_id']) ?: 'null';
         $sql = "UPDATE users 
-                                                  SET firstname = '{$user['firstname']}',
-                                                  lastname = '{$user['lastname']}',
-                                                  login = '{$user['login']}',
-                                                  password = '{$user['password']}',
-                                                  profils_id = $userMediaId,
-                                                  rights_id = {$user['rights_id']} 
-                                                  WHERE users.id = {$user['idUser']}";
+                SET firstname = '{$user['firstname']}',
+                    lastname = '{$user['lastname']}',
+                    login = '{$user['login']}',
+                    password = '{$user['password']}',
+                    profils_id = $userMediaId,
+                    rights_id = {$user['rights_id']} 
+                    WHERE users.id = {$user['idUser']}";
 
         $updateUser = $this->db->query($sql );
         return $updateUser;
     }
 
-    public function createUser($firstname, $lastname, $login, $password, $profil_picture_id)
+    public function createUser($firstname, $lastname, $login, $password, $profil_picture_id = null, $rights_id = self::USER_RIGHT_ID)
     {
         $reqNewUser = $this->db->prepare('INSERT INTO users(firstname, lastname, login, password, profils_id, rights_id) VALUES(?, ?, ?, ?, ?, ?)');
-        $newUser = $reqNewUser->execute(array($firstname, $lastname, $login, $password, $profil_picture_id, self::USER_RIGHT_ID));
+        $newUser = $reqNewUser->execute(array($firstname, $lastname, $login, $password, $profil_picture_id, $rights_id));
         $newUserId = $this->db->lastInsertId();
         $user = new user();
         return $user->get($newUserId);
@@ -81,5 +83,21 @@ class User extends Manager
         return $reqLogUser->fetch(PDO::FETCH_ASSOC);
     }
 
+
+    public static function checkExistingLogin($login){
+        $user = new User();
+        $existingUser = $user->getByLogin($login);
+        return ($existingUser->rowCount() > 0) ? true : false;
+    }
+
+    public static function addProfilePicture($tmpPicture, $alt){
+        $path = $tmpPicture['profils_id']['name'] ? : '';
+        $userPic = new Medias();
+        $insertedProfilPicId = $userPic->insertUserPic($path, $alt);
+        if (!$insertedProfilPicId) {
+            return false;
+        }
+        return $insertedProfilPicId;
+    }
 }
 

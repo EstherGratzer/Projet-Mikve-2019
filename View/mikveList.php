@@ -11,7 +11,7 @@ ob_start();?>
         <div class="col-xs-5 col-sm-4 col-md-3" id="mikves_id_<?php echo $list['id'] ?>">
             <img src="public/images/<?php echo $list['path'] ?>" alt="<?php echo $list['alt'] ?>" class="col-xs-12 col-sm-12 col-md-12">
             <h4 class="col-xs-12 col-sm-12 col-md-12"><i class="fas fa-tint"></i> <a href="mikve.php?action=showMikve&amp;mikves_id=<?php echo $list['id'] ?>"><?php echo $list['name'] ?></a></h4>
-            <p class="col-xs-12 col-sm-12 col-md-12"><i class="fas fa-map-marker-alt"></i> <?php echo $list['address'] ?></p>
+            <p class="col-xs-12 col-sm-12 col-md-12"><i class="fas fa-map-marker-alt"></i> <?php echo $list['street'] ?></p>
         </div>
     <?php }
 $listMikves->closeCursor();

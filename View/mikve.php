@@ -11,7 +11,7 @@ ob_start(); //on définit le contenu de content pour le mettre dans template.php
         <img id="photo_couv" class="col-xs-12 col-sm-12 col-md-12" src="public/images/<?php echo $mikveArray['photo_couv']['path'] ?>" alt="<?php echo $mikveArray['photo_couv']['alt'] ?>">
     </section>
     <h4><i class="fas fa-tint"></i> <?php echo $mikveArray['infos']['name'] ?></h4>
-    <p><i class="fas fa-map-marker-alt"></i> <?php echo $mikveArray['infos']['address'] ?></p>
+    <p><i class="fas fa-map-marker-alt"></i> <?php echo $mikveArray['infos']['street'] ?></p>
     <p><i class="fas fa-phone"></i> <?php echo $mikveArray['infos']['phoneNumber'] ?></p>
     <p><i class="far fa-clock"></i> <?php echo $mikveArray['infos']['openningTimes'] ?></p>
     <section class="row">

@@ -1,11 +1,11 @@
 
     <h3 align="center">Formulaire Utilisateur</h3>
+    <div class="alert alert-danger hidden" role="alert"></div>
     <div class="row">
         <div class="col-md-12">
             <form id="adminFormUsers" action="admin.php?action=updateUser" method="post">
                 <div class="col-sm-12">
                     <input type="hidden" class="form-control user-id" id="idUser<?=$id?>" name="idUser" value="<?php echo $id?>"></input>
-                    <input type="hidden" class="form-control" id="profils_id<?=$id?>" name="profils_id" value="<?php echo $profils_id?>"></input>
                 </div>
                 <div class="form-group row">
                     <label for="lastname" class="col-sm-4 col-form-label">Nom </label>
@@ -43,6 +43,12 @@
                             }
                             ?>
                         </select>
+                    </div>
+                </div>
+                <div class="form-group row">
+                    <label for="profils_id" class="col-sm-4 col-form-label">Photo de Profil </label>
+                    <div class="col-sm-8">
+                        <input type="file" class="form-control" id="profils_id<?=$id?>" name="profils_id" value="<?php echo $profils_id?>">
                     </div>
                 </div>
                 <br><br><br>

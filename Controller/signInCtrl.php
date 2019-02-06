@@ -9,7 +9,6 @@
 // Chargement des classes
 require_once('Model/manager.php');
 require_once('Model/user.php');
-require_once('Model/Medias.php');
 
 class signInCtrl {
 
@@ -28,7 +27,7 @@ class signInCtrl {
         }
         else {
             $user = new user();
-            $checkUser = $user -> connectUser($_POST['login'], $_POST['password']);
+            $checkUser = $user -> connectUser($_POST['login'], md5($_POST['password']));
 
             if($checkUser){
                 $currentUser = $user->get($checkUser['id']);
@@ -44,19 +43,28 @@ class signInCtrl {
         $firstname = isset($_POST['firstname']) ? $_POST['firstname'] : '';
         $lastname = isset($_POST['lastname']) ? $_POST['lastname'] : '';
         $login = isset($_POST['login']) ? $_POST['login'] : '';
-        $password = isset($_POST['password']) ? $_POST['password'] : '';
-        $isRequiredFields = $this->validateEmptyFields($firstname, $lastname, $login, $password);
-        $isNewMember = $this->validateExistingLogin($login);
+        $password = isset($_POST['password']) ? md5($_POST['password']) : '';
+        $profil_picture_id = null;
+        $this->validateEmptyFields($firstname, $lastname, $login, $password);
+        $isExistingMember = User::checkExistingLogin($login);
+        if($isExistingMember){
+            $this->errors[] = 'Ce login existe deja. Essayez un autre ou connectez vous.';
+        }
 
-        if(!$isRequiredFields || !$isNewMember){
+        if(count($this->errors) > 0){
             $errors = $this->errors;
             require("View/signIn.php");
         }
         else {
-            if ($_FILES ["profil_pic"]['size'] > 0){
+            if ($_FILES ["profils_id"]['size'] > 0){
 
                 $alt = $firstname.' '.$lastname;
-                $profil_picture_id = $this ->insertProfilPicture($alt);
+                $uploadedPicture = User::addProfilePicture($_FILES, $alt);
+                if($uploadedPicture) {
+                    $profil_picture_id = $uploadedPicture;
+                } else {
+                    echo "l'image n'a pu etre uploadee.";
+                }
             }
             $user = new user();
             $createdUser = $user->createUser($firstname, $lastname, $login, $password, $profil_picture_id);
@@ -80,26 +88,6 @@ class signInCtrl {
         return true;
     }
 
-    private function validateExistingLogin($login){
-        $verifiUser = new user();
-        $existingUser = $verifiUser->getByLogin($login);
-        if ($existingUser->rowCount() > 0) {
-            $this->errors[] = 'Ce login existe deja. Essayez un autre ou connectez vous.';
-            return false;
-        }
-        return true;
-    }
-
-    private function insertProfilPicture($alt){
-        $path = isset($_FILES['profil_pic']['name']) ? $_FILES['profil_pic']['name'] : '';
-        $userPic = new Medias();
-        $insertedProfilPicId = $userPic->insertUserPic($path, $alt);
-        if (!$insertedProfilPicId) {
-            $this->errors[] = 'impossible d\'ajouter l\'image';
-            return false;
-        }
-        return $insertedProfilPicId;
-    }
 
     public function logOut() {
         session_destroy();

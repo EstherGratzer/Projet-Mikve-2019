@@ -7,6 +7,7 @@ require_once('Model/equipement.php');
 require_once('Model/mikve.php');
 require_once('Model/halaha.php');
 require_once('Model/rights.php');
+
 function index()
 {
     //require ("View/adminFormMikves.php");
@@ -21,6 +22,7 @@ function index()
     }
     require("View/admin.php");
 }
+
 function login()
 {
     if(!empty ($_POST['Login']) && !empty ($_POST['Password']))
@@ -51,6 +53,8 @@ function login()
         include('view/admin.php');
     }
 }
+
+
 function create()
 {
     switch ($_GET['type']){
@@ -208,17 +212,70 @@ function createUser() // OK
 {
     $rights = new  Right();
     $rightList = $rights->find();
-    $id = isset($userToEdit['id'])?: NULL;
-    $profils_id = isset($userToEdit['profils_id'])?: NULL;
-    $lastname = isset($userToEdit['lastname'])?: NULL;
-    $firstname = isset($userToEdit['firstname'])?: NULL;
-    $login = isset($userToEdit['login'])?: NULL;
-    $password = isset($userToEdit['password'])?: NULL;
-    $rights_id = isset($userToEdit['rights_id'])?: NULL;
+
+    $id = NULL;
+    $profils_id = NULL;
+    $lastname = NULL;
+    $firstname = NULL;
+    $login = NULL;
+    $password = NULL;
+    $rights_id = null;
+
 
     require('View/adminFormUsers.php');
 
 }
+
+function addUser()
+{
+    if (isset($_POST['idUser']) && $_POST['idUser'] != '' ) {
+        updateUser();
+    }
+    else {
+        saveUser();
+    }
+}
+
+function saveUser()
+{
+    if(isset($_POST)){
+        $profils_id = null;
+        $lastname = $_POST['lastname'];
+        $firstname = $_POST['firstname'];
+        $login = $_POST['login'];
+        $password = $_POST['password'];
+        $rights_id = $_POST['rights_id'];
+
+        $loginExists = User::checkExistingLogin($login);
+        if(!$loginExists){
+            if(isset($_FILES)){
+                $alt = $firstname.' '.$lastname;
+                $uploadedPicture = User::addProfilePicture($_FILES, $alt);
+
+                if($uploadedPicture) {
+                    $profils_id = $uploadedPicture;
+                } else {
+                    echo "l'image n'a pu etre uploadee.";
+                }
+            }
+
+
+            $user = new User();
+            $newUser= $user->createUser($firstname, $lastname, $login, $password, $profils_id, $rights_id);
+
+            if ($newUser === false) {
+                return false;
+            } else {
+                listUsers();
+            }
+        } else {
+            return false;
+        }
+    }
+
+}
+
+
 
 function updateUserRights($members_id, $rights_id) // OK
 {
@@ -425,15 +482,5 @@ function saveEquipement () {
         return false;
     } else {
         listEquipements();
-    }
-
-}
-function addEquipement()
-{
-    if (isset($_POST['idEquip']) && $_POST['idEquip'] != '' ) {
-        updateEquipement();
-    }
-    else {
-        saveEquipement();
     }
 }
