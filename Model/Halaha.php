@@ -22,10 +22,11 @@ class halaha extends Manager
 
     public function find($options = [])
     {
-        $sqlHalaha = "SELECT * FROM halahotes ";
+        $sqlHalaha = "SELECT halahotes.*, medias.id as media_id, medias.path, medias.alt FROM halahotes 
+                      LEFT JOIN medias on medias.id = halahotes.media_id ";
 
         if(!empty($options['currentHalaha'])) {
-            $sqlHalaha .= "WHERE id != {$options['currentHalaha']}";
+            $sqlHalaha .= "WHERE halahotes.id != {$options['currentHalaha']}";
         }
 
         $req = $this->db->query($sqlHalaha);
