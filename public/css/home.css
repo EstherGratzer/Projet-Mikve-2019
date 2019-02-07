@@ -13,3 +13,11 @@
     right: 0;
     left: auto;
 }
+
+.zmanim {
+    text-align: center;
+}
+
+.hidden{
+    display: none;
+}

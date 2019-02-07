@@ -36,6 +36,54 @@ ob_start();
     })
 </script>
 
+<div class="contenair zmanim">
+
+<div class="choiceZmanim">
+    <form id="formChoiceZmanim">
+        <h4>Veuillez selectionner votre ville :</h4>
+        <div class="">
+            <select class="chosen-select" name="city">
+                <?php  foreach($cities as $city){
+                    ?>
+                <option data-country_code="<?php echo $city['code']?>" value="<?php echo $city['city']?>"><?php echo $city['city']?></option>
+                <?php } ?>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block"> Consulter les zmanim pour cette vile</button>
+    </form>
+
+    <div class="hidden answerZmanim" >
+        <div class="loading"><img src="public/images/giphy.gif" alt=""></div>
+        <div class="zmanim-content hidden">
+            <h4>Zmanim du <span class="dateToday"></span> à <span class="city"></span></h4>
+            <table>
+                <tr>
+                    <th>Nom</th>
+                    <th>Horaire</th>
+                    <th>Evenement</th>
+                </tr>
+                <tr>
+                    <td>Netz Hahchama : lever du soleil</td>
+                    <td ><span class="sunsize"></span></td>
+                    <td>Day Onah Starts</td>
+                </tr>
+                <tr>
+                    <td>Shkiah : coucher du soleil</td>
+                    <td ><span class="sunset"></span></td>
+                    <td>Night Onah Starts</td>
+                </tr>
+                <tr>
+                    <td>Tzish Hakohavim : tombée de la nuit </td>
+                    <td ><span class="nightfall"></span></td>
+                    <td>Earliest Mikvah Immersion</td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+</div>
+</div>
+
 <div class="container categories">
     <div class="row">
         <?php foreach($categories as $category){?>

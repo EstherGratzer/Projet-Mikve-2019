@@ -8,7 +8,10 @@
                     <div class="navbar-login">
                         <div class="row">
                             <div class="col-lg-12">
-                                <p class="text-left"><strong>Veuillez renseigner votre login et password</strong></p>
+                                <a href="" class="btn btn-block btn-facebook"> <i class="fab fa-facebook-f"></i>   Login via facebook</a>
+                                <p class="divider-text">
+                                    <span class="bg-light">Ou</span>
+                                </p><p class="text-left"><strong>Renseigner vos informations</strong></p>
                                 <div class="alert-danger hidden"></div><br>
                                 <div class="form-group">
                                     <input id = "login" name="login" class="form-control" placeholder="Login" type="email">

@@ -16,6 +16,7 @@ function index()
 {
     $message = "";
     $categories = findCategories();
+    $cities = findCities();
     require('View/home.php');
 }
 
@@ -27,6 +28,15 @@ function findCategories()
     return $categories;
 
 }
+
+function findCities()
+{
+    $cityClass = new City();
+    $cities = $cityClass ->find();
+    return $cities;
+
+}
+
 
 
 

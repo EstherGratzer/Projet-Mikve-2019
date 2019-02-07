@@ -14,6 +14,7 @@
         <link rel="stylesheet" href="public/css/template.css">
         <script src="public/js/script.js"></script>
         <script src="public/js/signIn.js"></script>
+        <script src="public/js/zmanim.js"></script>
         <?php echo $style ?>
         <title> <?php echo $title ?> </title>
     </head>
