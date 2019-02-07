@@ -15,6 +15,8 @@
         <script src="public/js/script.js"></script>
         <script src="public/js/signIn.js"></script>
         <script src="public/js/zmanim.js"></script>
+        <script src="dist/jquery.emojiRatings.min.js"></script>
+        <script src="public/js/mikve.js" type="application/javascript"></script>
         <?php echo $style ?>
         <title> <?php echo $title ?> </title>
     </head>

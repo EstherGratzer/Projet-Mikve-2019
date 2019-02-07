@@ -1,16 +1,22 @@
 <?php ob_start(); ?>
 <link rel="stylesheet" href="public/css/mikve.css">
-<script src="public/js/mikve.js" type="application/javascript"></script>
+
 <?php //grâce au require() on n'a pas besoin de marquer le chemin d'accès entier du fichier qui aurait été href="../../public/css/style.css"
 $style = ob_get_clean();
 $title = 'Mikve Page'; //on définit le contenu de title pour le mettre dans template.php
 ob_start(); //on définit le contenu de content pour le mettre dans template.php
 //print_r ($mikveArray) ?>
-<section id="mikves_id_<?php echo $mikveArray['infos']['id'] ?>">
+<section id="mikves_id_<?php echo $mikveArray['infos']['id'] ?>" class="section-page-mikve" data-id_mikve="<?php echo $mikveArray['infos']['id'] ?>">
     <section class="row">
         <img id="photo_couv" class="col-xs-12 col-sm-12 col-md-12" src="public/images/<?php echo $mikveArray['photo_couv']['path'] ?>" alt="<?php echo $mikveArray['photo_couv']['alt'] ?>">
     </section>
     <h4><i class="fas fa-tint"></i> <?php echo $mikveArray['infos']['name'] ?></h4>
+    <span class="averageRatings"><?php echo $nbstar ?></span>
+    <?php if (isset($_SESSION['user'])) { ?>
+    <span id="rating"></span>
+    <?php } else { ?>
+    <p>Pour noter ou commenter le mikvé veuillez vous connecter</p>
+    <?php } ?>
     <p><i class="fas fa-map-marker-alt"></i> <?php echo $mikveArray['infos']['street'] ?></p>
     <p><i class="fas fa-phone"></i> <?php echo $mikveArray['infos']['phoneNumber'] ?></p>
     <p><i class="far fa-clock"></i> <?php echo $mikveArray['infos']['openningTimes'] ?></p>
@@ -66,6 +72,9 @@ ob_start(); //on définit le contenu de content pour le mettre dans template.php
         </div>
     <?php } ?>
 </div>
+
+
+
 <!--shalva-->
 
 

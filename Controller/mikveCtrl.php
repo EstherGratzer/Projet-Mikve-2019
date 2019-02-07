@@ -3,6 +3,7 @@
 require_once('Model/manager.php');
 require_once('Model/mikve.php');
 require_once('Model/comment.php');
+require_once('Model/ratings.php');
 
 function index() {
     listMikves();
@@ -33,6 +34,9 @@ function showMikve() // OK
         $mikveArray = $mikve->getOneMikve($mikves_id, $tables_id);
         $comment = new comment();
         $listComments = $comment->getListComments($mikves_id, 0);
+        $rating = new Ratings();
+        $averageRatings = $rating->average($mikves_id);
+        $nbstar = round($averageRatings->fetchColumn(), 2);
         require('View/mikve.php');
     }
 }
@@ -89,4 +93,16 @@ function listComments($mikves_id) //
     }
     //$nb_Items = $mikve->getCountItems('mikves');
     //require('view/frontend/home.php');
+}
+
+function rate ()
+{
+    if (isset($_SESSION['user'])) {
+        $userId = $_SESSION['user']['id'];
+        $mikveId = $_POST['idMikve'];
+        $rate =$_POST['count']; ;
+        $rating = new Ratings();
+        $result = $rating ->insert($rate,$mikveId, $userId);
+        echo (bool)$result;
+    }
 }
