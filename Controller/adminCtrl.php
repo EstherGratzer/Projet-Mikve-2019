@@ -59,7 +59,7 @@ function create()
             break;
 
         case 'halahotes':
-            createHalahotes();
+            createHalaha();
             break;
 
         case 'mikve':
@@ -80,7 +80,7 @@ function edit()
             break;
 
         case 'halahotes':
-            editHalahotes();
+            editHalaha();
             break;
 
         case 'mikve':
@@ -103,7 +103,7 @@ function delete()
             break;
 
         case 'halahotes':
-            deleteHalahotes();
+            deleteHalaha();
             break;
 
         case 'mikve':
@@ -115,6 +115,7 @@ function delete()
             break;
     }
 }
+
 
 function listUsers() // OK
 {
@@ -239,13 +240,18 @@ function listHalahotes()
 {
     $halakha = new Halaha();
     $reqListHalaha = $halakha->getListHalaha();
+    $type = $halakha->type;
 
-//        if ($reqListHalaha === false)
-//        {
-//            throw new Exception('Impossible d\'afficher la liste des Halahotes!');
-//        }
-//        else
-//        {
+
+
+
+
+//     if ($reqListHalaha === false)
+//       {
+//           throw new Exception('Impossible d\'afficher la liste des Halahotes!');
+//       }
+//       else
+//      {
     require('View/adminListHalaha.php');
 
 }
@@ -253,25 +259,84 @@ function listHalahotes()
 function deleteHalaha() {
 
     $deleteHalaha= new Halaha();
-    $isdeleted = $deleteHalaha-> delete($_POST["id"]);
+    $isdeleted = $deleteHalaha-> delete($_GET["id"]);
     return $isdeleted;
 }
 
 function editHalaha() {
 
-    $halahaId = $_GET['id'];
-    $editHalaha = new Halaha();
-    $halahaToEdit = $editHalaha ->get($halahaId);
-    require('View/adminEditHalaha.php');
+
+    if (isset($_GET['id']))
+    {
+        $halahaId = $_GET['id'];
+
+        $editHalaha = new Halaha();
+        $halahaToEdit = $editHalaha ->get($halahaId);
+    }
+
+    if ($halahaToEdit === false)
+    {
+        echo'Impossible d\'afficher la liste des halahotes !';
+    }
+    else {
+        $id = $halahaToEdit['id'];
+        $titre=$halahaToEdit['titre'];
+        $contenu=$halahaToEdit['contenu'];
+        $media_id=$halahaToEdit['media_id'];
+        $path=$halahaToEdit['path'];
+        $alt=$halahaToEdit['alt'];
+        require('View/adminEditHalaha.php');
+
+    }
+
+
 }
+
 
 
 function updateHalaha()
 {
-    print_r($_FILES);
-    $editHalaha = new Halaha();
-    $reqEditHalaha = $editHalaha->edit($_POST, $_FILES);
+    if (isset($_POST)) {
+        $editHalaha = new Halaha();
+        $reqEditHalaha = $editHalaha->edit($_POST, $_FILES);
+    }
 }
+
+function createHalaha() {
+
+    $id = '';
+    $titre = '';
+    $contenu='';
+    $media_id='';
+    $path='';
+    $alt='';
+    require('View/adminEditHalaha.php');
+}
+
+function saveHalaha()
+{
+    if (isset($_POST)) {
+        $editHalaha = new Halaha();
+        $newHalaha = $editHalaha->saveHalakha($_POST, $_FILES);
+        if ($newHalaha === false) {
+            return false;
+        } else {
+            listHalahotes();
+        }
+
+    }
+}
+
+function addHalaha() {
+    if (isset($_POST['id']) && $_POST['id'] != '')
+    {
+        updateHalaha();
+    }
+    else {
+        saveHalaha();
+    }
+}
+
 
 function listMikves() // OK
 {

@@ -3,38 +3,34 @@ $(function()
     $("#connection").on("click", function(e)
     {
         e.preventDefault();
-        if($("#Login").val() === '' || $("#Password").val() === '')
-        {
+        if ($("#Login").val() === '' || $("#Password").val() === '') {
             $("div.container.admin.login").find("div.alert-danger").removeClass('hidden').text('Veuillez renseigner un Login et/ou un Mot de passe');
-        }
-        else
-        {
+        } else {
             $.ajax({
                 url: "admin.php?action=login",
                 type: "POST",
                 data: $(this).closest('form').serialize(),
-                success : function(resultAdmin){
+                success: function (resultAdmin) {
                     $("body").html(resultAdmin);
                 },
-                error : function () {
+                error: function () {
                     alert('Une erreur s\'est produite');
                 }
             });
         }
     });
 
-    $(document).on("click","ul.navbar-nav li a", function(e)
-    {
+    $(document).on("click", "ul.navbar-nav li a", function (e) {
         var action = $(this).data("action");
         $.ajax({
-            url: "admin.php?action="+action,
+            url: "admin.php?action=" + action,
             type: "POST",
 
-            success : function(resultDataList){
+            success: function (resultDataList) {
                 $(".listContent").removeClass('hidden').html(resultDataList);
             },
 
-            error : function () {
+            error: function () {
                 alert('Une erreur s\'est produite');
             }
 
@@ -42,9 +38,39 @@ $(function()
         return false;
     });
 
+    $(document).on('submit', '.formHalaha', function (e) {
+        e.preventDefault();
+
+        var objectId = $(this).find('.halaha-id').val(),
+            titreHalaha = $('#titre' + objectId).val();
+        var formData = new FormData($(this)[0]);
+
+        $.ajax({
+            type: "POST",
+            url: "admin.php?action=addHalaha",
+            data: formData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            success: function (list) {
+                if (objectId != ''){
+                    $('#alert_message').html('<div class="alert alert-success">La Halaha a été mise a jour!</div>');
+                    $("span.titre-halaha" + objectId).html(titreHalaha);
+                    $('#formEdit' + objectId).toggleClass('hidden');
+                }
+                else {
+                    $("#myModal").modal('hide');
+                    $(".listContent").removeClass('hidden').html(list);
+                }
+
+            }
+        });
+        return false;
+    });
+
     $(document).on('click', 'span.edit', function(){
         var elementIdToShow = $(this).data("href");
-        if ($('#'+elementIdToShow).hasClass('hidden')){
+        if ($('#' + elementIdToShow).hasClass('hidden')) {
             $.ajax({
                 url:"admin.php?action=edit",
                 type:"GET",
@@ -54,7 +80,7 @@ $(function()
                 }
             });
         }
-        $('#'+elementIdToShow).toggleClass('hidden');
+        $('#' + elementIdToShow).toggleClass('hidden');
 
     });
 
@@ -77,7 +103,7 @@ $(function()
 
     $(document).on('submit', 'form.form-equipement', function(e) {
         e.preventDefault();
-        var objectId =  $(this).find('.equipement-id').val(),
+        var objectId = $(this).find('.equipement-id').val(),
             newName = $('#newName' + objectId).val();
         $.ajax({
             type: "POST",
@@ -102,29 +128,26 @@ $(function()
         var lastname = $("#lastname" + userId).val();
         var firstname = $("#firstname" + userId).val();
         var login = $("#login" + userId).val();
-        var rightName = $("#rights_id" +  userId +" option:selected").html();
+        var rightName = $("#rights_id" + userId + " option:selected").html();
 
         e.preventDefault();
-        if($("#lastname").val() === '' || $("#firstname").val() === '' || $("#login").val() === '' || $("#password").val() === '')
-        {
+        if ($("#lastname").val() === '' || $("#firstname").val() === '' || $("#login").val() === '' || $("#password").val() === '') {
             $("div.container.admin.login").find("div.alert-danger").removeClass('hidden').text('Tous les champs sont obligatoires');
-        }
-        else
-        {
+        } else {
             $.ajax({
                 url: "admin.php?action=updateUser",
                 type: "POST",
                 data: $(this).closest('form').serialize(),
 
-                success : function(){
-                    $("span.lastname"+userId).html(lastname);
-                    $("span.firstname"+userId).html(firstname);
-                    $("span.login"+userId).html(login);
-                    $("span.rightName"+userId).html(rightName);
+                success: function () {
+                    $("span.lastname" + userId).html(lastname);
+                    $("span.firstname" + userId).html(firstname);
+                    $("span.login" + userId).html(login);
+                    $("span.rightName" + userId).html(rightName);
                     $('#formEdit' + userId).toggleClass('hidden');
 
                 },
-                error : function () {
+                error: function () {
                     alert('Une erreur s\'est produite');
                 }
             });
@@ -141,17 +164,46 @@ $(function()
 
     $(document).on('click', 'div.newElement', function(){
         //affichage en mode dialog du formulaire de creation, creer un div modal dans le template pour affichage du dialog via la fonction bootstrap modal
-            $.ajax({
-                url: "admin.php?action=create",
-                type: "GET",
-                data: {type : $('#list').data('type')},
+        $.ajax({
+            url: "admin.php?action=create",
+            type: "GET",
+            data: {type : $('#list').data('type')},
 
-                success: function (data) {
-                    $(".modal-content").html(data);
-                    $("#myModal").modal('show');
-                }
-            });
+            success: function (data) {
+                $(".modal-content").html(data);
+                $("#myModal").modal('show');
+            }
+        });
     });
+
+    $(document).on('click', '.delete-picture', function () {
+        var halahaId = $(this).closest("form").find('.halaha-id').val();
+        $(".halaha-image" + halahaId ).remove();
+
+    });
+
+    $(document).on('reset', '.formHalaha', function (e) {
+        var halahaId = $(this).find('.halaha-id').val();
+        var elementIdToClose = $('#formEdit' + halahaId);
+        elementIdToClose.toggleClass('hidden');
+        $("#myModal").modal('hide');
+    });
+
+
+
+    $(document).on('click', 'span.create', function () {
+
+        $.ajax({
+            url: "admin.php?action=create",
+            method: "GET",
+            data: { type: $('#list').data('type')},
+
+            success: function (data) {
+                $(".newForm").toggleClass('hidden').html(data);
+
+            }
+        })
+    })
 
     $(document).on('reset', 'form.form-equipement', function(e) {
         var equipementId = $(this).find('.equipement-id').val();
@@ -160,7 +212,6 @@ $(function()
 
         $("#myModal").modal('hide');
     });
-
-});
+})
 
 

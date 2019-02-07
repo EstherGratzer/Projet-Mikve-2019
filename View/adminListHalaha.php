@@ -1,5 +1,6 @@
-<div class="listHalaha">
+<div id="list" class="listHalaha" data-type = "<?php echo $type?>">
     <section class="col-lg-12 table-responsive">
+        <div class="newElement" data-href="newElementForm" align="right"><i class="fas fa-edit"></i>Créer un Nouvelle Halaha</div>
 
         <table class="table table-striped table-condensed">
             <thead>
@@ -17,12 +18,10 @@
                 $jsonHalaha = json_encode($halakha);
                 ?>
                 <div id="alert_message"></div>
-                <tr class="halaha-<?=$halakha['id'] ?>">
-                    <td><?=$halakha['titre'] ?></td>
-<!--                    <td>--><?//= $users['image']?><!--</td>-->
-
-                    <td><span class="edit" data-href="formEdit<?=$halakha['id'] ?>"><i class="fas fa-pencil-alt"></i></span></td>
-                    <td><span class="delete-halaha" data-halaha='<?=$jsonHalaha?>'><i class="fas fa-trash"></i></span></td>
+                <tr class="objectId<?=$halakha['id'] ?>">
+                    <td><span class="titre-halaha<?=$halakha['id'] ?>"><?=$halakha['titre'] ?></span></td>
+                    <td><span class="edit" data-href="formEdit<?=$halakha['id'] ?>" data-id="<?=$halakha['id'] ?>"><i class="fas fa-pencil-alt"></i></span></td>
+                    <td><span class="delete" data-delete='<?=$jsonHalaha?>'><i class="fas fa-trash"></i></span></td>
                 </tr>
                 <tr class="hidden" id="formEdit<?=$halakha['id'] ?>">
                     <td colspan="3"></td>
@@ -35,3 +34,4 @@
         </table>
     </section>
 </div>
+

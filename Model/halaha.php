@@ -8,7 +8,7 @@
 
 class halaha extends Manager
 {
-
+    public $type = 'halahotes';
     public function get($id){
 
         $halahaSql = "SELECT halahotes.*, medias.id as media_id, medias.path, medias.alt FROM halahotes 
@@ -22,10 +22,11 @@ class halaha extends Manager
 
     public function find($options = [])
     {
-        $sqlHalaha = "SELECT * FROM halahotes ";
+        $sqlHalaha = "SELECT halahotes.*, medias.id as media_id, medias.path, medias.alt FROM halahotes 
+                      LEFT JOIN medias on medias.id = halahotes.media_id ";
 
         if(!empty($options['currentHalaha'])) {
-            $sqlHalaha .= "WHERE id != {$options['currentHalaha']}";
+            $sqlHalaha .= "WHERE halahotes.id != {$options['currentHalaha']}";
         }
 
         $req = $this->db->query($sqlHalaha);
@@ -52,13 +53,25 @@ class halaha extends Manager
 
     public function edit ($halaha, $image = null)
     {
-        $imageId = null;
+        //est ce qu'une photo a ete uploadee
         if($image['Picture']['size'] > 0){
             $imageId = $this->addImage($image, $halaha['titre']);
+        }
+        elseif (isset($halaha['media_id'])){
+            $imageId = $halaha['media_id'];
         }
 
         $this->editHalahaContent($halaha, $imageId);
 
+    }
+
+    public function saveHalakha($halahaToAdd, $uploadedPicture = []){
+        $imageId = null;
+        if($uploadedPicture['Picture']['size'] > 0){
+            $imageId = $this->addImage($uploadedPicture, $halahaToAdd['titre']);
+        }
+
+        $this->save($halahaToAdd, $imageId);
     }
 
     private function editHalahaContent($halaha, $imageId){
@@ -69,7 +82,6 @@ class halaha extends Manager
         $edithalaha= "UPDATE halahotes
           set titre='{$titre}' , contenu='{$contenu}', media_id = '{$imageId}' WHERE id={$id}";
         $isedited = $this->db->query($edithalaha);
-        var_dump($isedited);
 
         return $isedited;
     }
@@ -89,6 +101,15 @@ class halaha extends Manager
         return $lastId;
     }
 
+
+   public function save ($halaha, $media_id = null)
+   {
+       $req = $this->db->prepare("INSERT INTO halahotes (titre,contenu,media_id)  VALUES (?, ?, ?)");
+        $req->execute(array($halaha['titre'], $halaha['contenu'], $media_id));
+        return $req;
+   }
+
+    
 }
 
 
